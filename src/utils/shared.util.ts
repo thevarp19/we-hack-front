@@ -13,3 +13,12 @@ export function shuffleArray(array: any[]) {
     }
     return array;
 }
+
+export const tryWithErrorLog = <T>(action: () => T): T | null => {
+    try {
+        return action();
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};

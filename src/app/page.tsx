@@ -13,6 +13,7 @@ export default function Home() {
                 name="name"
                 inputProps={{ placeholder: "name" }}
             />
+            <div onClick={() => {}}>click me</div>
         </main>
     );
 }
