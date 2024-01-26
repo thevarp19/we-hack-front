@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 
 const getLeftTime = (distance: number) => {
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    const days = Math.max(Math.floor(distance / (1000 * 60 * 60 * 24)), 0);
+    const hours = Math.max(
+        Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        0
     );
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const minutes = Math.max(
+        Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        0
+    );
+    const seconds = Math.max(Math.floor((distance % (1000 * 60)) / 1000), 0);
+
     const daysStr = days < 10 ? `0${days}` : `${days}`;
     const hoursStr = hours < 10 ? `0${hours}` : `${hours}`;
     const minutesStr = minutes < 10 ? `0${minutes}` : `${minutes}`;
     const secondsStr = seconds < 10 ? `0${seconds}` : `${seconds}`;
+
     return {
         days: daysStr,
         hours: hoursStr,

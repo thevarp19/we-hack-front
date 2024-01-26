@@ -14,6 +14,17 @@ export function shuffleArray(array: any[]) {
     return array;
 }
 
+export const isArrayEmpty = (array: any): boolean => {
+    return array?.length === 0;
+};
+
+export const doIfWindowExists = <T>(action: () => T): T | null => {
+    if (global?.window !== undefined) {
+        return action();
+    }
+    return null;
+};
+
 export const tryWithErrorLog = <T>(action: () => T): T | null => {
     try {
         return action();

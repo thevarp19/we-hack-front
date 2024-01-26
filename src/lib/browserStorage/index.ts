@@ -1,4 +1,4 @@
-import { tryWithErrorLog } from "@/utils/shared.util";
+import { doIfWindowExists, tryWithErrorLog } from "@/utils/shared.util";
 
 class BrowserStorage {
     private readonly storage: Storage;
@@ -42,10 +42,20 @@ class BrowserStorage {
     }
 }
 
-const rawLocalStorage = new BrowserStorage(localStorage);
-Object.freeze(rawLocalStorage);
-export const myLocalStorage = rawLocalStorage;
+let rawLocalStorage = null;
 
-const rawSessionStorage = new BrowserStorage(sessionStorage);
-Object.freeze(rawSessionStorage);
-export const mySessionStorage = rawSessionStorage;
+doIfWindowExists(() => {
+    rawLocalStorage = new BrowserStorage(localStorage);
+    Object.freeze(rawLocalStorage);
+});
+
+export const myLocalStorage: BrowserStorage | null = rawLocalStorage;
+
+let rawSessionStorage = null;
+
+doIfWindowExists(() => {
+    rawSessionStorage = new BrowserStorage(sessionStorage);
+    Object.freeze(rawSessionStorage);
+});
+
+export const mySessionStorage: BrowserStorage | null = rawSessionStorage;
