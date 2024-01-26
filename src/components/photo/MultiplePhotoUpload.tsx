@@ -1,10 +1,5 @@
-import {
-    compressPhoto,
-    deletePhoto,
-    optimizePhoto,
-    uploadPhoto,
-} from "@/api/photo";
-import { UploadPhotoDTO } from "@/types/api";
+import { useDeletePhoto } from "@/hooks/photo/useDeletePhoto";
+import { createCustomRequest } from "@/utils/photo.util";
 import {
     DndContext,
     DragEndEvent,
@@ -19,13 +14,13 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Upload, UploadFile, UploadProps } from "antd";
-import { AxiosProgressEvent } from "axios";
 import {
     Dispatch,
     FC,
     JSXElementConstructor,
     ReactElement,
     SetStateAction,
+    useEffect,
 } from "react";
 
 interface MultiplePhotoUploadProps {
@@ -57,52 +52,16 @@ export const MultiplePhotoUpload: FC<MultiplePhotoUploadProps> = ({
         }
     };
 
-    const customRequest: UploadProps["customRequest"] = async (options) => {
-        const { onSuccess, file, onProgress, onError } = options;
-        const config = {
-            headers: { "content-type": "multipart/form-data" },
-            onUploadProgress: (event: AxiosProgressEvent) => {
-                if (onProgress) {
-                    onProgress({
-                        percent: (event.loaded / (event?.total || 1)) * 100,
-                    });
-                }
-            },
-        };
-
-        const photos: UploadPhotoDTO = { pcImage: file as File };
-
-        if (doesCompress) {
-            const compressedPhoto = await compressPhoto(photos.pcImage);
-            photos.pcImage = compressedPhoto;
-        }
-
-        if (doesOptimizePhoto) {
-            await optimizePhoto(photos);
-        }
-
-        try {
-            const res = await uploadPhoto(photos, config);
-            if (onSuccess) {
-                onSuccess(res);
-            }
-        } catch (error) {
-            console.error(error);
-            if (onError) {
-                // @ts-ignore
-                onError();
-            }
-        }
-    };
+    const customRequest = createCustomRequest(doesCompress, doesOptimizePhoto);
 
     const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
         setFileList(newFileList);
     };
 
-    const getAxiosUploadedFileId = (file: UploadFile<any>): string => {
-        return file?.response?.data?.id || file.uid;
-    };
-
+    const { handleDeletePhoto } = useDeletePhoto();
+    useEffect(() => {
+        console.log(fileList);
+    }, [fileList]);
     return (
         <DndContext sensors={[sensor]} onDragEnd={onDragEnd}>
             <SortableContext
@@ -122,9 +81,7 @@ export const MultiplePhotoUpload: FC<MultiplePhotoUploadProps> = ({
                             file={file}
                         />
                     )}
-                    onRemove={async (file) => {
-                        await deletePhoto(getAxiosUploadedFileId(file));
-                    }}
+                    onRemove={handleDeletePhoto}
                 >
                     Drop your file here, or click to browse
                 </Upload.Dragger>

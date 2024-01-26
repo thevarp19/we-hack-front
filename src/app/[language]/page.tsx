@@ -1,6 +1,6 @@
 "use client";
+import { MultiplePhotoUpload } from "@/components/photo/MultiplePhotoUpload";
 import { LanguageSelector } from "@/components/shared/LanguageSelector";
-import { MultiplePhotoUpload } from "@/components/shared/MultiplePhotoUpload";
 import { UploadFile } from "antd";
 import { useState } from "react";
 
@@ -12,6 +12,7 @@ export default function Page() {
             <MultiplePhotoUpload
                 fileList={fileList}
                 setFileList={setFileList}
+                doesCompress={false}
             />
         </div>
     );
