@@ -1,5 +1,9 @@
 "use client";
-import { FormikInput } from "@/components/form/FormikInput";
+import {
+    FormikInput,
+    FormikPasswordInput,
+} from "@/components/form/FormikInput";
+import { Logo } from "@/components/shared/Logo";
 import { useLanguage } from "@/context/LanguageContext";
 import { useRegister } from "@/hooks/auth/useRegister";
 import { SolutionOutlined, UserOutlined } from "@ant-design/icons";
@@ -9,21 +13,31 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function RegisterPage() {
+    const { formik, mutation } = useRegister();
+    const { getHref } = useLanguage();
     const [current, setCurrent] = useState(0);
 
     const next = () => {
+        if (
+            formik.values.username == "" ||
+            formik.values.firstName == "" ||
+            formik.values.lastName == ""
+        ) {
+            formik.setFieldTouched("username");
+            formik.setFieldTouched("firstName");
+            formik.setFieldTouched("lastName");
+
+            return;
+        }
         setCurrent(current + 1);
     };
 
     const prev = () => {
         setCurrent(current - 1);
     };
-
-    const { formik, mutation } = useRegister();
-    const { getHref } = useLanguage();
-
     return (
         <main className="flex flex-col h-screen justify-center gap-10 items-center px-5">
+            <Logo />
             <div className="w-full max-w-xs sm:max-w-sm">
                 <Steps
                     responsive={false}
@@ -94,7 +108,7 @@ export default function RegisterPage() {
                                 type: "email",
                             }}
                         />
-                        <FormikInput
+                        <FormikPasswordInput
                             name="password"
                             formik={formik}
                             formItemProps={{ className: clsx("w-full") }}
@@ -104,7 +118,7 @@ export default function RegisterPage() {
                                 type: "password",
                             }}
                         />
-                        <FormikInput
+                        <FormikPasswordInput
                             name="repeatPassword"
                             formik={formik}
                             formItemProps={{ className: clsx("w-full") }}

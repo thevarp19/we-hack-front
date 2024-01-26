@@ -1,5 +1,9 @@
 "use client";
-import { FormikInput } from "@/components/form/FormikInput";
+import {
+    FormikInput,
+    FormikPasswordInput,
+} from "@/components/form/FormikInput";
+import { Logo } from "@/components/shared/Logo";
 import { useLanguage } from "@/context/LanguageContext";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { Button, Form } from "antd";
@@ -12,6 +16,7 @@ export default function LoginPage() {
 
     return (
         <main className="flex flex-col h-screen justify-center gap-10 items-center px-5">
+            <Logo />
             <div className="w-full max-w-xs sm:max-w-sm">
                 <Form
                     onFinish={formik.submitForm}
@@ -27,7 +32,7 @@ export default function LoginPage() {
                         }}
                     />
 
-                    <FormikInput
+                    <FormikPasswordInput
                         name="password"
                         formik={formik}
                         formItemProps={{ className: clsx("w-full") }}
