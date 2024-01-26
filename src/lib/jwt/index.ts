@@ -15,12 +15,12 @@ const setRefreshToken = (refreshToken: string) => {
 };
 
 const getAccessToken = () => {
-    const accessToken = getJwt().access;
+    const accessToken = getJwt()?.access;
     return accessToken;
 };
 
 const getRefreshToken = () => {
-    const refreshToken = getJwt().refresh;
+    const refreshToken = getJwt()?.refresh;
     return refreshToken;
 };
 

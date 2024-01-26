@@ -1,29 +1,24 @@
 "use client";
 import { Loading } from "@/components/shared/Loading";
 import { useFetchUserProfile } from "@/hooks/query/auth";
+import jwtService from "@/lib/jwt";
 import { UserProfile } from "@/types/auth";
 import { useRouter } from "next/navigation";
 import {
-    Dispatch,
     FC,
     PropsWithChildren,
-    SetStateAction,
     createContext,
     useContext,
     useEffect,
-    useState,
 } from "react";
+import { useLanguage } from "./LanguageContext";
 
 interface AuthContext {
-    isAuth: boolean;
-    setIsAuth: Dispatch<SetStateAction<boolean>>;
     userProfile?: UserProfile;
+    logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContext>({
-    isAuth: false,
-    setIsAuth: () => {},
-});
+export const AuthContext = createContext<AuthContext>({ logout: () => {} });
 
 export const useAuthContext = (): AuthContext => {
     const context = useContext(AuthContext);
@@ -34,22 +29,28 @@ export const useAuthContext = (): AuthContext => {
 };
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [isAuth, setIsAuth] = useState(false);
     const router = useRouter();
-    const { isPending, isError, data: userProfile } = useFetchUserProfile();
+    const { isError, data: userProfile, error } = useFetchUserProfile();
+
+    const logout = () => {
+        jwtService.removeJwt();
+        window.location.href = getHref("/auth/login");
+    };
+
+    const { getHref } = useLanguage();
 
     useEffect(() => {
         if (isError) {
-            router.push("/auth");
+            router.push(getHref("/auth/login"));
         }
     }, [isError]);
 
-    if (isPending) {
+    if (!userProfile?.username) {
         return <Loading isFullScreen />;
     }
 
     return (
-        <AuthContext.Provider value={{ isAuth, setIsAuth, userProfile }}>
+        <AuthContext.Provider value={{ userProfile, logout }}>
             {children}
         </AuthContext.Provider>
     );

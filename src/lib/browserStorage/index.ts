@@ -9,8 +9,12 @@ class BrowserStorage {
 
     get(key: string) {
         return tryWithErrorLog(() => {
-            const value = this.storage.getItem(key);
-            return value ? JSON.parse(value) : null;
+            const stringValue = this.storage.getItem(key);
+            if (!stringValue) {
+                throw new Error(`No value for key "${key}"`);
+            }
+            const value = JSON.parse(stringValue);
+            return value || null;
         });
     }
 
