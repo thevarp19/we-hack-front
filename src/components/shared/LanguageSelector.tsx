@@ -4,7 +4,7 @@ import { Button, Dropdown, MenuProps } from "antd";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export const LanguageSelector = ({ ...props }) => {
+export const LanguageSelector = () => {
     const { language } = useLanguage();
     const pathname = usePathname();
     const removeLanguageFromHref = (href: string): string => {

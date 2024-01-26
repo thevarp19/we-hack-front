@@ -11,7 +11,7 @@ export default function CreatePasswordPage({ searchParams }: any) {
     const { message } = App.useApp();
 
     useEffect(() => {
-        const oauthLanguage = mySessionStorage.get("language") || "kz";
+        const oauthLanguage = mySessionStorage?.get("language") || "kz";
         const urlParams = new URLSearchParams(window.location.search);
         const jwtToken: JwtType = {
             access: urlParams.get("access") || "",

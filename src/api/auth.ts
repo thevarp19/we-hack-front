@@ -1,19 +1,23 @@
-import { axiosAuthorized } from "@/lib/axios";
+import { axios, axiosAuthorized } from "@/lib/axios";
 import { JwtDTO, LoginDTO, RegisterDTO, UserProfileDTO } from "@/types/api";
 import { UserProfile } from "@/types/auth";
 
 export const fetchUserProfile = async (): Promise<UserProfile> => {
-    const { data } = await axiosAuthorized.get<UserProfileDTO>(
-        "/users/profile/cover/"
-    );
-    return data as UserProfile;
+    const { data } = await axiosAuthorized.get<UserProfileDTO>("/api/profile/");
+    const userProfile: UserProfile = {
+        fistName: data.first_name,
+        lastName: data.last_name,
+        username: data.username,
+        email: data.email,
+    };
+    return userProfile;
 };
 
 export const login = async (values: LoginDTO): Promise<JwtDTO> => {
-    const { data } = await axiosAuthorized.post<JwtDTO>("/auth/login", values);
+    const { data } = await axios.post<JwtDTO>("/api/login/", values);
     return data;
 };
 
 export const register = async (values: RegisterDTO): Promise<void> => {
-    await axiosAuthorized.post("/auth/login", values);
+    await axios.post("/api/register/", values);
 };

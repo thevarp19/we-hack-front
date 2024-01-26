@@ -18,9 +18,14 @@ export const FormikInput: FC<FormikInputProps> = ({
     inputProps,
 }) => {
     return (
-        <Form.Item help={getFormikHelpText(formik, name)} {...formItemProps}>
+        <Form.Item
+            validateStatus={getFormikHelpText(formik, name) ? "error" : ""}
+            help={getFormikHelpText(formik, name)}
+            {...formItemProps}
+        >
             <Input
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 name={name}
                 value={formik.values[name]}
                 {...inputProps}

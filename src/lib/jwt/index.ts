@@ -25,22 +25,22 @@ const getRefreshToken = () => {
 };
 
 const saveJwt = (jwt: JwtType) => {
-    myLocalStorage.set("jwt", jwt);
+    myLocalStorage?.set("jwt", jwt);
 };
 
 const setJwtProperty = (propertyName: JwtProperties, propertyValue: string) => {
-    myLocalStorage.modify<JwtType>("jwt", (jwt) => {
+    myLocalStorage?.modify<JwtType>("jwt", (jwt) => {
         jwt[propertyName] = propertyValue;
         return jwt;
     });
 };
 
 const getJwt = () => {
-    return myLocalStorage.get("jwt") as JwtType;
+    return myLocalStorage?.get("jwt") as JwtType;
 };
 
 const removeJwt = () => {
-    myLocalStorage.remove("jwt");
+    myLocalStorage?.remove("jwt");
 };
 
 const jwtService = {
