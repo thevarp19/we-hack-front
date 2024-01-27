@@ -17,7 +17,7 @@ export const QuizQuestion: FC<QuizQuestionProps> = ({
             <div>
                 {question.answers.map((answer, index) => (
                     <Card
-                        key={answer.id}
+                        key={index}
                         onClick={() => {
                             onAnswerClick(answer);
                         }}

@@ -12,18 +12,24 @@ const validationSchema = Yup.object().shape({
     title: requiredStringSchema(),
 });
 
-export const useCreateLesson = () => {
+export const useCreateLesson = (courseId: string) => {
     const router = useRouter();
 
     const { message } = App.useApp();
 
     const mutation = useMutation({
         mutationFn: async (value: LessonType) => {
-            const { data } = await axiosShared.post("/api/admin/lesson", value);
+            const { data } = await axiosShared.post<{ lessonId: string }>(
+                "/api/admin/lesson",
+                value
+            );
             return data;
         },
-        onSuccess() {
+        onSuccess(data) {
             message.success("Success!");
+            axiosShared.put(
+                `/api/admin/course/?courseId=${courseId}&lessonId=${data.lessonId}`
+            );
             router.push("/en/admin/");
         },
         onError() {

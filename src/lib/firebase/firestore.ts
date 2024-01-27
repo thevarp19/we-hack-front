@@ -1,11 +1,13 @@
 import {
     DocumentData,
     addDoc,
+    arrayUnion,
     collection,
     doc,
     getDoc,
     getDocs,
     getFirestore,
+    updateDoc,
 } from "firebase/firestore";
 import firebaseApp from ".";
 
@@ -51,5 +53,24 @@ export const saveItem = async (
     } catch (error) {
         console.error("Error adding document: ", error);
         return null;
+    }
+};
+
+export const addItemToArrayField = async (
+    collectionPath: string,
+    documentId: string,
+    fieldName: string,
+    newItem: any
+) => {
+    const docRef = doc(firestoreDb, collectionPath, documentId);
+
+    try {
+        await updateDoc(docRef, {
+            [fieldName]: arrayUnion(newItem),
+        });
+        console.log("Document field updated successfully");
+    } catch (error) {
+        console.error("Error updating document field: ", error);
+        throw error;
     }
 };

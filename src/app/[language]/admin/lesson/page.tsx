@@ -8,11 +8,14 @@ import { Button, Form, Steps, UploadFile } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import clsx from "clsx";
 import { FormikProps } from "formik";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 export default function CreateLessonPage() {
-    const { formik, mutation } = useCreateLesson();
+    const searchParams = useSearchParams();
+    const courseId = searchParams.get("courseId") || "";
+    const { formik, mutation } = useCreateLesson(courseId);
     const [current, setCurrent] = useState(0);
 
     const next = () => {
@@ -117,7 +120,7 @@ export default function CreateLessonPage() {
                             }}
                             className={clsx("w-full mb-5")}
                         >
-                            Add question
+                            Add content
                         </Button>
                         <Form.Item className="w-full">
                             <Button
