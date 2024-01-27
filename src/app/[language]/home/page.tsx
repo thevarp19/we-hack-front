@@ -7,7 +7,7 @@ export default function HomePage() {
     return (
         <div>
             <h1>Hello</h1>
-            <p>{userProfile?.fistName}</p>
+            <p>{userProfile?.first_name}</p>
             <Button onClick={logout}>Logout</Button>
         </div>
     );

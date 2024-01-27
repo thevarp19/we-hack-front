@@ -5,8 +5,8 @@ import { UserProfile } from "@/types/auth";
 export const fetchUserProfile = async (): Promise<UserProfile> => {
     const { data } = await axiosAuthorized.get<UserProfileDTO>("/api/profile/");
     const userProfile: UserProfile = {
-        fistName: data.first_name,
-        lastName: data.last_name,
+        first_name: data.first_name,
+        last_name: data.last_name,
         username: data.username,
         email: data.email,
     };
