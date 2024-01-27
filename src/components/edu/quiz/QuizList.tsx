@@ -11,7 +11,7 @@ export const QuizList: FC<QuizListProps> = ({ quizzes }) => {
     return (
         <div className="flex flex-col gap-4">
             {quizzes.map((quiz) => (
-                <Link href={`/en/home/edu/1/quiz/${quiz.id}`} key={quiz.id}>
+                <Link href={`/en/home/edu/quiz/${quiz.id}`} key={quiz.id}>
                     <QuizView quiz={quiz} key={quiz.id} />
                 </Link>
             ))}

@@ -1,12 +1,19 @@
+"use client";
 import { CourseDetails } from "@/components/edu/course/CourseDetails";
 import { LessonsList } from "@/components/edu/lesson/LessonsList";
 import { QuizList } from "@/components/edu/quiz/QuizList";
+import { axiosShared } from "@/lib/axios";
 import { CourseDetailsType, LessonType, QuizType } from "@/types/edu";
 import { BookOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
 import { Card, Tabs, TabsProps } from "antd";
+import { useParams } from "next/navigation";
 
 export default function CoursePage() {
     const courseView = mock;
+    const params = useParams();
+    const courseId = params.course;
+
     const items: TabsProps["items"] = [
         {
             key: "1",
@@ -24,6 +31,17 @@ export default function CoursePage() {
             children: <CourseDetails courseDetails={courseView} />,
         },
     ];
+    const { data: courseData } = useQuery({
+        queryKey: ["course", courseId],
+        queryFn: async () => {
+            const { data } = await axiosShared.get(
+                `/api/edu/lesson/?id=${courseId}`
+            );
+            return data;
+        },
+        retry: 2,
+    });
+
     return (
         <div>
             <div className="bg-course w-300 h-200 text-white">
@@ -39,7 +57,7 @@ export default function CoursePage() {
                             cx="4"
                             cy="4"
                             r="2"
-                            stroke-width="3"
+                            strokeWidth="3"
                             fill="#E5E7EB"
                         ></circle>
                     </svg>
@@ -49,7 +67,7 @@ export default function CoursePage() {
                     <Card>
                         Lessons
                         <div>
-                            <BookOutlined /> {courseView.lessons.length}
+                            <BookOutlined /> {courseView.lessonIds.length}
                         </div>
                     </Card>
                     <Card>
@@ -57,7 +75,7 @@ export default function CoursePage() {
                         <div>
                             {" "}
                             <QuestionCircleOutlined />{" "}
-                            {courseView.quizzes.length}
+                            {courseView.quizIds.length}
                         </div>
                     </Card>
                 </div>
@@ -222,33 +240,29 @@ const mock: CourseDetailsType = {
     skills: ["Risk Management", "Beneficiary Planning"],
     goals: ["Optimize life insurance strategies"],
     isPrivate: false,
-    lessons: ["lesson5", "lesson6"],
-    quizzes: ["quiz3"],
+    lessonIds: ["lesson5", "lesson6"],
+    quizIds: ["quiz3"],
 };
 
 const mockLessons: LessonType[] = [
     {
         title: "Introduction to Life Insurance",
-        number: 1,
-        lessonContents: ["lesson1", "lesson2"],
+        lessonContentIds: ["lesson1", "lesson2"],
         id: "quiz1",
     },
     {
         title: "Understanding Life Insurance Policies",
-        number: 1,
-        lessonContents: ["lesson3", "lesson4"],
+        lessonContentIds: ["lesson3", "lesson4"],
         id: "quiz2",
     },
     {
         title: "Advanced Life Insurance Strategies",
-        number: 1,
-        lessonContents: ["lesson5", "lesson6"],
+        lessonContentIds: ["lesson5", "lesson6"],
         id: "quiz3",
     },
     {
         title: "Claiming Life Insurance Benefits",
-        number: 1,
-        lessonContents: ["lesson7", "lesson8"],
+        lessonContentIds: ["lesson7", "lesson8"],
         id: "quiz4",
     },
 ];

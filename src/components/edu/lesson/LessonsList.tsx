@@ -10,9 +10,13 @@ interface LessonsListProps {
 export const LessonsList: FC<LessonsListProps> = ({ lessons }) => {
     return (
         <div className="flex flex-col gap-4">
-            {lessons.map((lesson) => (
-                <Link href={`/en/home/edu/1/${lesson.id}`} key={lesson.id}>
-                    <LessonView lesson={lesson} key={lesson.id} />
+            {lessons.map((lesson, index) => (
+                <Link href={`/en/home/edu/lesson/${lesson.id}`} key={lesson.id}>
+                    <LessonView
+                        lesson={lesson}
+                        index={index + 1}
+                        key={lesson.id}
+                    />
                 </Link>
             ))}
         </div>

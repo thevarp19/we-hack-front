@@ -8,7 +8,7 @@ export default function CoursesPage() {
             <h1>Courses</h1>
             <div className="grid grid-cols-3 gap-5 w-max">
                 {mockCourses.map((course, index) => (
-                    <Link key={index} href={"/en/home/edu/1"}>
+                    <Link key={index} href={"/en/home/edu/course/1"}>
                         <CourseView courseView={course} />
                     </Link>
                 ))}
@@ -27,8 +27,8 @@ const mockCourses: CourseDetailsType[] = [
         skills: ["Insurance Fundamentals", "Risk Assessment"],
         goals: ["Understand the concept of life insurance"],
         isPrivate: false,
-        lessons: ["lesson1", "lesson2"],
-        quizzes: ["quiz1"],
+        lessonIds: ["lesson1", "lesson2"],
+        quizIds: ["quiz1"],
     },
     {
         title: "Understanding Life Insurance Policies",
@@ -41,8 +41,8 @@ const mockCourses: CourseDetailsType[] = [
         skills: ["Policy Analysis", "Premium Calculation"],
         goals: ["Understand different life insurance policies"],
         isPrivate: false,
-        lessons: ["lesson3", "lesson4"],
-        quizzes: ["quiz2"],
+        lessonIds: ["lesson3", "lesson4"],
+        quizIds: ["quiz2"],
     },
     {
         title: "Advanced Life Insurance Strategies",
@@ -55,8 +55,8 @@ const mockCourses: CourseDetailsType[] = [
         skills: ["Risk Management", "Beneficiary Planning"],
         goals: ["Optimize life insurance strategies"],
         isPrivate: false,
-        lessons: ["lesson5", "lesson6"],
-        quizzes: ["quiz3"],
+        lessonIds: ["lesson5", "lesson6"],
+        quizIds: ["quiz3"],
     },
     {
         title: "Claiming Life Insurance Benefits",
@@ -68,7 +68,7 @@ const mockCourses: CourseDetailsType[] = [
         skills: ["Claims Processing", "Documentation"],
         goals: ["Know the process of claiming life insurance benefits"],
         isPrivate: false,
-        lessons: ["lesson7", "lesson8"],
-        quizzes: ["quiz4"],
+        lessonIds: ["lesson7", "lesson8"],
+        quizIds: ["quiz4"],
     },
 ];

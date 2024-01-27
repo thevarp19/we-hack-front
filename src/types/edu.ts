@@ -7,15 +7,16 @@ export interface CourseDetailsType {
     skills: string[];
     goals: string[];
     isPrivate?: boolean;
-    lessons: string[];
-    quizzes: string[];
+    lessonIds: string[];
+    quizIds: string[];
 }
+
+export type CourseLevelType = "beginner" | "intermediate" | "advanced";
 
 export interface LessonType {
     id: string;
-    number: number;
     title: string;
-    lessonContents: string[];
+    lessonContentIds: string[];
 }
 
 export interface LessonContentType {
@@ -44,5 +45,3 @@ export interface AnswerType {
     answer: string;
     isCorrect: boolean;
 }
-
-export type CourseLevelType = "beginner" | "intermediate" | "advanced";
