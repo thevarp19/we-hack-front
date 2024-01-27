@@ -10,12 +10,11 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                 <div className="py-5 px-5 border-b flex items-center  justify-between">
                     <Logo />
                     <Link
-                        href="/en/home/edu"
+                        href="/en/auth/login"
                         className="text-yellow hover:text-yellow cursor-pointer"
                     >
                         Sign in as
-                        <br className="sm:hidden" />
-                        an employee
+                        <br className="sm:hidden" /> an employee
                     </Link>
                 </div>
                 {children}

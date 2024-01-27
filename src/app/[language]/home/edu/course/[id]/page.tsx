@@ -6,7 +6,7 @@ import { axiosShared } from "@/lib/axios";
 import { CourseDetailsType, LessonType } from "@/types/edu";
 import { BookOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Tabs, TabsProps } from "antd";
+import { ConfigProvider, Tabs, TabsProps } from "antd";
 import { useParams } from "next/navigation";
 
 export default function CoursePage() {
@@ -50,22 +50,24 @@ export default function CoursePage() {
         {
             key: "2",
             label: "Details",
-            children: <CourseDetails courseDetails={courseData} />,
+            children: (
+                <div className="max-w-[620px] pb-5">
+                    <CourseDetails courseDetails={courseData} />
+                </div>
+            ),
         },
     ];
 
     return (
-        <div>
+        <div className="px-5 pt-5">
             {(isPending || isLessonPending) && <Loading isFullScreen />}
-            <div className="bg-course w-300 h-200 text-white">
-                <h1 className="font-bold capitalize text-2xl">
+            <div className="bg-course w-300 h-200 text-white p-6 sm:max-w-[620px] mb-5">
+                <h1 className="font-semibold capitalize text-lg mb-4 w-full">
                     {courseData?.title}
                 </h1>
-                <div className="flex items-center gap-1">
-                    <span className="capitalize text-base">
-                        {courseData?.level}
-                    </span>
-                    <svg height="10" width="10" className="dot">
+                <div className="flex items-center gap-1 text-base mb-8">
+                    <span className="capitalize ">{courseData?.level}</span>
+                    <svg height="10" width="10" className="dot mt-1">
                         <circle
                             cx="4"
                             cy="4"
@@ -76,23 +78,31 @@ export default function CoursePage() {
                     </svg>
                     <span className="">{courseData?.duringInHours} hours</span>
                 </div>
-                <div className="flex">
-                    <Card>
-                        Lessons
-                        <div>
-                            <BookOutlined /> {lessonData?.length}
+                <div className="flex gap-4">
+                    <div className="w-[150px]">
+                        <div className="text-lg text-yellow">Lessons</div>
+                        <div className="text-lg">
+                            <BookOutlined width={"30px"} /> {lessonData?.length}
                         </div>
-                    </Card>
-                    <Card>
-                        Quizzes{" "}
-                        <div>
+                    </div>
+                    <div className="w-[150px] ">
+                        <div className="text-lg text-yellow">Quizzes</div>{" "}
+                        <div className="text-lg">
                             {" "}
                             <QuestionCircleOutlined /> {0}
                         </div>
-                    </Card>
+                    </div>
                 </div>
             </div>
-            <Tabs defaultActiveKey="1" items={items} />
+            <ConfigProvider
+                theme={{
+                    token: {
+                        fontSize: 18,
+                    },
+                }}
+            >
+                <Tabs defaultActiveKey="1" items={items} />
+            </ConfigProvider>
         </div>
     );
 }
