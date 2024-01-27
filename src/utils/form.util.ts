@@ -15,6 +15,9 @@ export function getFormikHelpText(
 export const requiredStringSchema = (fieldName: string = "This field") =>
     Yup.string().required(`${fieldName} is required!`);
 
+export const requiredNumberSchema = (fieldName: string = "This field") =>
+    Yup.number().required(`${fieldName} is required!`);
+
 export const emailSchema = Yup.string()
     .email("Invalid email address!")
     .required("Email is required!");

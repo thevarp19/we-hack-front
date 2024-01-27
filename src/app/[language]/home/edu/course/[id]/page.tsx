@@ -8,6 +8,7 @@ import { BookOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Card, Tabs, TabsProps } from "antd";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CoursePage() {
     const courseView = mock;
@@ -35,12 +36,16 @@ export default function CoursePage() {
         queryKey: ["course", courseId],
         queryFn: async () => {
             const { data } = await axiosShared.get(
-                `/api/edu/lesson/?id=${courseId}`
+                `/api/edu/course/?all=false&id=58onilcDDcCcBA3TjCMq`
             );
             return data;
         },
         retry: 2,
     });
+
+    useEffect(() => {
+        console.log(courseData);
+    }, [courseData]);
 
     return (
         <div>
