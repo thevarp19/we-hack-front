@@ -5,6 +5,14 @@
 @import "animations.css";
 @import "custom.css";
 
+@layer base {
+    :root {
+        --color-primary: #00805f;
+        --color-yellow: #fbae16;
+        --color-gray: #ededed;
+    }
+}
+
 img {
     object-fit: cover;
     object-position: center;
