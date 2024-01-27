@@ -14,13 +14,11 @@ export interface CourseDetailsType {
 export type CourseLevelType = "beginner" | "intermediate" | "advanced";
 
 export interface LessonType {
-    id: string;
+    id?: string;
     title: string;
-    lessonContentIds: string[];
+    lessonContents?: LessonContentType[];
 }
-
 export interface LessonContentType {
-    id: string;
     title: string;
     photoUrl: string;
     isTitleValid?: boolean;
@@ -29,19 +27,17 @@ export interface LessonContentType {
 }
 
 export interface QuizType {
-    id: string;
+    id?: string;
     title: string;
     questions: QuestionType[];
 }
 
 export interface QuestionType {
-    id: string;
     question: string;
     answers: AnswerType[];
 }
 
 export interface AnswerType {
-    id: string;
     answer: string;
     isCorrect: boolean;
 }

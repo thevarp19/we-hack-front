@@ -229,7 +229,7 @@ export default function CreateCoursePage() {
                                         <Tag
                                             key={uuid()}
                                             closable
-                                            className="!flex justify-between"
+                                            className="!flex justify-between truncate"
                                             onClose={(e) => {
                                                 e.preventDefault();
                                                 formik.setFieldValue(
