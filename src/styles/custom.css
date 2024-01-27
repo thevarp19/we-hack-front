@@ -2,3 +2,7 @@
     width: 0px;
     height: 0px;
 }
+
+.bg-course {
+    background: linear-gradient(rgb(43, 38, 76) 0%, rgb(27, 28, 50) 100%);
+}
