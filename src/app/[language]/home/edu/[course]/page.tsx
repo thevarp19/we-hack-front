@@ -1,5 +1,6 @@
+import { CourseDetails } from "@/components/edu/course/CourseDetails";
 import { LessonsList } from "@/components/edu/lesson/LessonsList";
-import { LessonType } from "@/types/edu";
+import { CourseDetailsType, LessonType } from "@/types/edu";
 import { BookOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Card, Tabs, TabsProps } from "antd";
 
@@ -13,8 +14,8 @@ export default function CoursePage() {
         },
         {
             key: "2",
-            label: "Quizzes",
-            children: "Content of Tab Pane 2",
+            label: "Details",
+            children: <CourseDetails courseDetails={courseView} />,
         },
     ];
     return (
@@ -60,7 +61,7 @@ export default function CoursePage() {
     );
 }
 
-const mock = {
+const mock: CourseDetailsType = {
     title: "Advanced Life Insurance Strategies",
     photoUrl:
         "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
