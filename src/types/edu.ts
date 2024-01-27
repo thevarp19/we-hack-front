@@ -27,4 +27,22 @@ export interface LessonContentType {
     prevLesson?: () => void;
 }
 
+export interface QuizType {
+    id: string;
+    title: string;
+    questions: QuestionType[];
+}
+
+export interface QuestionType {
+    id: string;
+    question: string;
+    answers: AnswerType[];
+}
+
+export interface AnswerType {
+    id: string;
+    answer: string;
+    isCorrect: boolean;
+}
+
 export type CourseLevelType = "beginner" | "intermediate" | "advanced";
