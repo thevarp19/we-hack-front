@@ -1,3 +1,4 @@
+import { ChatProvider } from "@/context/ChatContext";
 import { LanguageKey, LanguageProvider } from "@/context/LanguageContext";
 import { notFound } from "next/navigation";
 import { ReactNode } from "react";
@@ -17,7 +18,7 @@ export default function LanguageLayout({
 
     return (
         <LanguageProvider languageKey={languageKey as LanguageKey}>
-            {children}
+            <ChatProvider>{children}</ChatProvider>
         </LanguageProvider>
     );
 }
