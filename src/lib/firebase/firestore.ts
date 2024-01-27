@@ -7,7 +7,9 @@ import {
     getDoc,
     getDocs,
     getFirestore,
+    query,
     updateDoc,
+    where,
 } from "firebase/firestore";
 import firebaseApp from ".";
 
@@ -21,7 +23,7 @@ export const getItemById = async (
     const docSnapshot = await getDoc(docRef);
     if (docSnapshot.exists()) {
         const data = docSnapshot.data();
-        return data;
+        return { ...data, id: docSnapshot.id };
     }
     return null;
 };
@@ -34,7 +36,7 @@ export const getAllItems = async (path: string): Promise<DocumentData[]> => {
     querySnapshot.forEach((doc) => {
         if (doc.exists()) {
             const data = doc.data();
-            items.push(data);
+            items.push({ ...data, id: doc.id });
         }
     });
 
@@ -73,4 +75,25 @@ export const addItemToArrayField = async (
         console.error("Error updating document field: ", error);
         throw error;
     }
+};
+
+export const getItemsByAttribute = async (
+    collectionPath: string,
+    attributeField: string,
+    attributeValue: any
+): Promise<DocumentData[]> => {
+    const collectionRef = collection(firestoreDb, collectionPath);
+    const q = query(collectionRef, where(attributeField, "==", attributeValue));
+    const querySnapshot = await getDocs(q);
+
+    const items: DocumentData[] = [];
+
+    querySnapshot.forEach((doc) => {
+        if (doc.exists()) {
+            const data = doc.data();
+            items.push(data);
+        }
+    });
+
+    return items;
 };

@@ -1,4 +1,8 @@
-import { getAllItems, getItemById } from "@/lib/firebase/firestore";
+import {
+    getAllItems,
+    getItemById,
+    getItemsByAttribute,
+} from "@/lib/firebase/firestore";
 
 export async function GET(req: Request, res: Response) {
     const { searchParams } = new URL(req.url);
@@ -16,4 +20,22 @@ export async function GET(req: Request, res: Response) {
     }
 
     return new Response("Nor found!", { status: 404 });
+}
+
+export async function PUT(req: Request, res: Response) {
+    const { searchParams } = new URL(req.url);
+
+    const courseId = searchParams.get("courseId") || "";
+    try {
+        if (courseId) {
+            const lessons = await getItemsByAttribute(
+                "lessons",
+                "courseId",
+                courseId
+            );
+            return Response.json(lessons);
+        }
+    } catch (error) {}
+
+    return Response.json([]);
 }

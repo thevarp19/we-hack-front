@@ -51,8 +51,6 @@ export const useCreateCourse = () => {
             description: "",
             skills: [],
             goals: [],
-            lessonIds: [],
-            quizIds: [],
         },
         validationSchema: validationSchema,
         validateOnBlur: true,

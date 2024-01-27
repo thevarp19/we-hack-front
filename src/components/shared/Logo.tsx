@@ -10,7 +10,7 @@ export const Logo: FC<LogoProps> = ({ href = "/" }) => {
     return (
         <Link
             href={href}
-            className="text-2xl flex gap-4 text-primary uppercase font-medium hover:text-gray-600"
+            className="text-2xl flex gap-4 text-primary uppercase font-medium hover:text-yellow"
         >
             <Icon src="favicon" />
             Halyk Life

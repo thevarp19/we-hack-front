@@ -1,74 +1,40 @@
+"use client";
 import { CourseView } from "@/components/edu/course/CourseView";
-import { CourseDetailsType } from "@/types/edu";
+import { Loading } from "@/components/shared/Loading";
+import { axiosShared } from "@/lib/axios";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 export default function CoursesPage() {
+    const { data: courses, isPending } = useQuery({
+        queryKey: ["courses"],
+        queryFn: async () => {
+            const { data } = await axiosShared.get(`/api/edu/course/?all=true`);
+            return data;
+        },
+        retry: 2,
+    });
+
     return (
-        <div>
-            <h1>Courses</h1>
-            <div className="grid grid-cols-3 gap-5 w-max">
-                {mockCourses.map((course, index) => (
-                    <Link key={index} href={"/en/home/edu/course/1"}>
-                        <CourseView courseView={course} />
-                    </Link>
-                ))}
+        <>
+            <h1 className="text-xl my-5 font-semibold">Courses</h1>
+            <div className="max-h-max pb-10 flex justify-center">
+                {isPending ? (
+                    <Loading />
+                ) : (
+                    <div className="grid grid-cols-2 pb-5 max-sm:grid-cols-1 gap-5 w-max ">
+                        {courses.map((course: any, index: number) => (
+                            <Link
+                                key={index}
+                                href={`/en/home/edu/course/${course.id}`}
+                                className="h-max"
+                            >
+                                <CourseView courseView={course} />
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </div>
-        </div>
+        </>
     );
 }
-const mockCourses: CourseDetailsType[] = [
-    {
-        title: "Introduction to Life Insurance",
-        photoUrl:
-            "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
-        level: "advanced",
-        duringInHours: 2,
-        description: "Learn the basics of life insurance and its importance.",
-        skills: ["Insurance Fundamentals", "Risk Assessment"],
-        goals: ["Understand the concept of life insurance"],
-        isPrivate: false,
-        lessonIds: ["lesson1", "lesson2"],
-        quizIds: ["quiz1"],
-    },
-    {
-        title: "Understanding Life Insurance Policies",
-        photoUrl:
-            "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
-        level: "advanced",
-        duringInHours: 3,
-        description:
-            "Dive deeper into life insurance policies and their types.",
-        skills: ["Policy Analysis", "Premium Calculation"],
-        goals: ["Understand different life insurance policies"],
-        isPrivate: false,
-        lessonIds: ["lesson3", "lesson4"],
-        quizIds: ["quiz2"],
-    },
-    {
-        title: "Advanced Life Insurance Strategies",
-        photoUrl:
-            "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
-        level: "advanced",
-        duringInHours: 4,
-        description:
-            "Explore advanced strategies for maximizing life insurance benefits.",
-        skills: ["Risk Management", "Beneficiary Planning"],
-        goals: ["Optimize life insurance strategies"],
-        isPrivate: false,
-        lessonIds: ["lesson5", "lesson6"],
-        quizIds: ["quiz3"],
-    },
-    {
-        title: "Claiming Life Insurance Benefits",
-        photoUrl:
-            "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
-        level: "advanced",
-        duringInHours: 2.5,
-        description: "Learn how to successfully claim life insurance benefits.",
-        skills: ["Claims Processing", "Documentation"],
-        goals: ["Know the process of claiming life insurance benefits"],
-        isPrivate: false,
-        lessonIds: ["lesson7", "lesson8"],
-        quizIds: ["quiz4"],
-    },
-];

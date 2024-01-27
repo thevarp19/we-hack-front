@@ -4,7 +4,7 @@ import { Tag } from "antd";
 import { FC, useId } from "react";
 
 interface CourseDetailsProps {
-    courseDetails: CourseDetailsType;
+    courseDetails: CourseDetailsType | undefined;
 }
 
 export const CourseDetails: FC<CourseDetailsProps> = ({ courseDetails }) => {
@@ -12,12 +12,12 @@ export const CourseDetails: FC<CourseDetailsProps> = ({ courseDetails }) => {
         <div>
             <div>
                 <h2>Course description</h2>
-                <div>{courseDetails.description}</div>
+                <div>{courseDetails?.description}</div>
             </div>
             <div>
                 <h2>Received skills</h2>
                 <div>
-                    {courseDetails.skills.map((skill, index) => (
+                    {courseDetails?.skills.map((skill, index) => (
                         <Tag key={useId()}>{skill}</Tag>
                     ))}
                 </div>
@@ -25,7 +25,7 @@ export const CourseDetails: FC<CourseDetailsProps> = ({ courseDetails }) => {
             <div>
                 <h2>What will you learn</h2>
                 <div>
-                    {courseDetails.goals.map((goal) => (
+                    {courseDetails?.goals.map((goal) => (
                         <div key={useId()} className="flex items-center gap-1">
                             {" "}
                             <CheckOutlined />
