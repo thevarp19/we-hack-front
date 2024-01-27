@@ -1,5 +1,6 @@
 import { CourseView } from "@/components/edu/course/CourseView";
 import { CourseDetailsType } from "@/types/edu";
+import Link from "next/link";
 
 export default function CoursesPage() {
     return (
@@ -7,7 +8,9 @@ export default function CoursesPage() {
             <h1>Courses</h1>
             <div className="grid grid-cols-3 gap-5 w-max">
                 {mockCourses.map((course, index) => (
-                    <CourseView key={index} courseView={course} />
+                    <Link key={index} href={"/en/home/edu/1"}>
+                        <CourseView courseView={course} />
+                    </Link>
                 ))}
             </div>
         </div>
