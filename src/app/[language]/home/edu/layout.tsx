@@ -41,7 +41,7 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                             Courses
                         </Link>
                         <Link
-                            href="#"
+                            href="/en/home/profile"
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer"
                         >
                             <ProfileOutlined />
