@@ -9,7 +9,7 @@ import TextArea from "antd/es/input/TextArea";
 import clsx from "clsx";
 import { FormikProps } from "formik";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 
 export default function CreateLessonPage() {
@@ -29,6 +29,8 @@ export default function CreateLessonPage() {
     const prev = () => {
         setCurrent((prev) => prev - 1);
     };
+
+    const downRef = useRef<HTMLDivElement>(null);
 
     return (
         <main className="flex flex-col h-screen py-14 gap-10 items-center px-5 overflow-y-scroll bx-hidden-scroll">
@@ -93,6 +95,7 @@ export default function CreateLessonPage() {
                                     );
                                 }
                             )}
+                            <div ref={downRef} />
                         </div>
                         <Button
                             size={"large"}
@@ -117,6 +120,9 @@ export default function CreateLessonPage() {
                                         },
                                     ]);
                                 }
+                                downRef.current?.scrollIntoView({
+                                    behavior: "smooth",
+                                });
                             }}
                             className={clsx("w-full mb-5")}
                         >

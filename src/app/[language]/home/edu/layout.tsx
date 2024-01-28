@@ -26,8 +26,8 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                 </div>
                 {children}
                 <div className="min-h-[90px]"></div>
-                <div className=" bg-white flex items-center  justify-center fixed bottom-0 w-screen">
-                    <div className=" py-5 px-5 flex items-center  justify-between gap-10 border-t sm:min-w-[620px] text-base">
+                <div className=" bg-white flex items-center  justify-center fixed left-0 bottom-0 w-screen">
+                    <div className=" py-5 px-5 flex items-center  justify-between gap-10 border-t text-base">
                         <Link
                             href="/en/home/edu"
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer"
