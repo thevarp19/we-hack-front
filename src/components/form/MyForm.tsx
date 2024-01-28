@@ -1,7 +1,6 @@
 import { useLogin } from "@/hooks/auth/useLogin";
 import { Button, Form } from "antd";
 import clsx from "clsx";
-import { Field } from "formik";
 import React from "react";
 import * as Yup from "yup";
 import { FormikInput } from "./FormikInput";
@@ -80,11 +79,6 @@ const MyForm: React.FC = () => {
                 }}
             />
 
-            <Field as="select" name="status">
-                <option value="NOT_APPROVED">Not Approved</option>
-                <option value="APPROVED">Approved</option>
-            </Field>
-
             <Form.Item className="w-full">
                 <Button
                     htmlType="submit"
@@ -93,7 +87,7 @@ const MyForm: React.FC = () => {
                     loading={mutation.isPending}
                     className={clsx("w-full")}
                 >
-                    Log in
+                    Submit
                 </Button>
             </Form.Item>
         </Form>

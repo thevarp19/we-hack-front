@@ -1,6 +1,7 @@
 import { ChatHeaderProps } from "@/types/chat";
 import clsx from "clsx";
 import { ArrowLeft2 } from "iconsax-react";
+import Link from "next/link";
 import { FC } from "react";
 export const ChatHeader: FC<ChatHeaderProps> = ({ children }) => {
     // const { openChatList } = useChatContext();
@@ -13,11 +14,13 @@ export const ChatHeader: FC<ChatHeaderProps> = ({ children }) => {
             )}
         >
             <div className="flex items-center gap-4">
-                <ArrowLeft2
-                    className="md:hidden cursor-pointer"
-                    width={24}
-                    height={24}
-                />
+                <Link href={"/en/home/"}>
+                    <ArrowLeft2
+                        className="md:hidden cursor-pointer"
+                        width={24}
+                        height={24}
+                    />
+                </Link>
                 <div>{children}</div>
             </div>
         </div>
