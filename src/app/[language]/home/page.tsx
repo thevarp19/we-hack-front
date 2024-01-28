@@ -21,7 +21,7 @@ export default function HomePage() {
             >
                 <div className="absolute inset-0">
                     <Image
-                        src="https://www.halyklife.kz/storage/app/uploads/public/609/b8e/0bb/609b8e0bba376054512726.jpeg"
+                        src="https://www.halyklife.kz/storage/app/uploads/public/60e/024/b87/60e024b879f77267188774.jpg"
                         alt="carousel item"
                         style={{
                             objectFit: "cover",
@@ -39,7 +39,7 @@ export default function HomePage() {
             >
                 <div className="absolute inset-0">
                     <Image
-                        src="https://www.halyklife.kz/storage/app/uploads/public/60e/024/b87/60e024b879f77267188774.jpg"
+                        src="https://www.halyklife.kz/storage/app/uploads/public/609/b8e/0bb/609b8e0bba376054512726.jpeg"
                         alt="carousel item"
                         style={{
                             objectFit: "cover",
