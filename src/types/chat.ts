@@ -19,6 +19,7 @@ export interface MessageRequestType {
     run_id: string;
 }
 export interface AnswerType {
+    content: any;
     status: string;
     answer: {
         role: string;

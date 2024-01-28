@@ -35,17 +35,22 @@ export const useCreateMessage = () => {
     useEffect(() => {
         let intervalId: string | number | NodeJS.Timeout | undefined;
         if (runId) {
-            const checkStatusInterval = 3000;
             const checkStatus = () => {
                 getAnswer(runId)
                     .then((response: AxiosResponse<AnswerType>) => {
                         const data = response.data;
+                        console.log("Response Data:", data);
                         if (data?.status === "completed") {
                             queryClient.invalidateQueries({
                                 queryKey: ["get_chat"],
                             });
+                            if (data?.content) {
+                                console.log("Adding message:", data.content);
+                                addMessage(data.content);
+                            } else {
+                                console.log("No answer in data:", data);
+                            }
                             setIsLoading(false);
-                            addMessage(data?.answer);
                             clearInterval(intervalId);
                         }
                     })
@@ -55,7 +60,7 @@ export const useCreateMessage = () => {
                     });
             };
 
-            intervalId = setInterval(checkStatus, checkStatusInterval);
+            intervalId = setInterval(checkStatus, 3000);
         }
 
         return () => {
