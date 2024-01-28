@@ -1,4 +1,4 @@
-import { axios } from "@/lib/axios";
+import { axios, axiosShared } from "@/lib/axios";
 import { UploadPhotoDTO } from "@/types/api";
 import { tryWithErrorLog } from "@/utils/shared.util";
 import { AxiosRequestConfig } from "axios";
@@ -65,5 +65,9 @@ export const uploadPhoto = async (
     formData.append("tablet_image", photos.tabletImage || photos.pcImage);
     formData.append("mobile_image", photos.mobileImage || photos.pcImage);
 
-    return axios.post("api/admin/item-image/", formData, config);
+    return axiosShared.post(
+        "https://jasaw-development-backend.vercel.app/api/admin/item-image/",
+        formData,
+        config
+    );
 };
