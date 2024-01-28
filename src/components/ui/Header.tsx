@@ -6,13 +6,20 @@ import clsx from "clsx";
 import { ShieldSlash, ShieldTick } from "iconsax-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "../shared/Logo";
 
 export const Header = () => {
     const router = useRouter();
     const { userProfile, logout } = useAuthContext();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [confirmEmail, setConfirmEmail] = useState<boolean>(false);
+    useEffect(() => {
+        const isEmailConfirmed = localStorage.getItem("isEmailConfirmed");
+        setConfirmEmail(
+            isEmailConfirmed ? JSON.parse(isEmailConfirmed) : false
+        );
+    }, []);
     const handleConfirmEmail = async () => {
         setIsLoading(true);
         try {
@@ -27,7 +34,7 @@ export const Header = () => {
     if (isLoading) {
         return (
             <div className="w-full h-full items-center flex justify-center">
-                <Spin size="large" />
+                <Spin size="small" />
             </div>
         );
     }
@@ -53,39 +60,44 @@ export const Header = () => {
                     Education
                 </Link>
             </div>
-            <div className="z-50">
-                <h2 className="font-medium sm:text-lg">{`${userProfile?.first_name} ${userProfile?.last_name}`}</h2>
-
-                <h2 className="flex items-center">
-                    {userProfile?.is_email_confirmed ? (
-                        <ShieldTick size="32" color="#00805f" />
-                    ) : (
-                        <ShieldSlash size="32" color="#FF0000" />
-                    )}
-                    {userProfile?.is_email_confirmed ? (
-                        <> Email verified.</>
-                    ) : (
-                        <> Email not confirmed.</>
-                    )}
-                </h2>
+            <div className="flex z-50 gap-5">
                 <div>
-                    <button
-                        onClick={handleConfirmEmail}
-                        className={`opacity-50 bg-yellow rounded-lg px-1 sm:line-height-lg ${
-                            userProfile?.is_email_confirmed && "hidden"
-                        }`}
-                    >
-                        Confirm email
-                    </button>
+                    <div>
+                        <h2 className="font-medium sm:text-lg">{`${userProfile?.first_name} ${userProfile?.last_name}`}</h2>
+
+                        <h2 className="flex items-center">
+                            {confirmEmail ? (
+                                <>
+                                    <ShieldTick size="32" color="#00805f" />
+                                    Email verified.
+                                </>
+                            ) : (
+                                <>
+                                    <ShieldSlash size="32" color="#FF0000" />
+                                    Email not confirmed.
+                                </>
+                            )}
+                        </h2>
+                    </div>
+                    <div>
+                        <button
+                            onClick={handleConfirmEmail}
+                            className={`opacity-50 text-xs bg-yellow rounded-lg px-1 sm:line-height-lg ${
+                                confirmEmail && "hidden"
+                            }`}
+                        >
+                            Confirm email
+                        </button>
+                    </div>
                 </div>
+                <a
+                    // href="/login"
+                    onClick={logout}
+                    className="bg-yellow h-fit text-black rounded-md py-3 px-5 w-fit sm:line-height-lg"
+                >
+                    Logout
+                </a>
             </div>
-            <a
-                href="/login"
-                onClick={logout}
-                className="opacity-50 sm:line-height-lg"
-            >
-                Logout
-            </a>
         </header>
     );
 };

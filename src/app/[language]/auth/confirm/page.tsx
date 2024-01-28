@@ -16,6 +16,7 @@ export default function ConfirmEmail() {
         try {
             const response = await confirmEmail(uid, token);
             router.push(getHref("/home"));
+            localStorage.setItem("isEmailConfirmed", "true");
             messageApi.success(response.data.message);
         } catch (error) {
             console.error("Error:", error);
@@ -38,5 +39,9 @@ export default function ConfirmEmail() {
             </div>
         );
     }
-    return <>{contextHolder}</>;
+    return (
+        <div>
+            <>{contextHolder}</>
+        </div>
+    );
 }

@@ -5,7 +5,9 @@ import { ReactNode } from "react";
 export default function HomeLayout({ children }: { children?: ReactNode }) {
     return (
         <AuthProvider>
-            <Header />
+            <div className="relative z-40">
+                <Header />
+            </div>
             {children}
         </AuthProvider>
     );

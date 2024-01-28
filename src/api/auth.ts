@@ -9,7 +9,7 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
         last_name: data.last_name,
         username: data.username,
         email: data.email,
-        is_email_confirmed: data.is_email_confirmed,
+        profile: { is_email_confirmed: data.is_email_confirmed },
     };
     return userProfile;
 };

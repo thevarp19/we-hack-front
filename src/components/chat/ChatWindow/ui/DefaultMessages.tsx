@@ -7,7 +7,7 @@ import { useCreateMessage } from "../hooks/useCreateMessage";
 export const DefaultMessages: React.FC = () => {
     const [defaultMessages, setDefaultMessages] = useState<any>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { handleSendMessage, setRunId } = useCreateMessage();
+    const { handleSendMessage, isLoading: mess } = useCreateMessage();
     useEffect(() => {
         const fetchDefaultMessages = async () => {
             setIsLoading(true);

@@ -35,6 +35,7 @@ export const useCreateMessage = () => {
     useEffect(() => {
         let intervalId: string | number | NodeJS.Timeout | undefined;
         if (runId) {
+            const checkStatusInterval = 3000;
             const checkStatus = () => {
                 getAnswer(runId)
                     .then((response: AxiosResponse<AnswerType>) => {
@@ -54,7 +55,7 @@ export const useCreateMessage = () => {
                     });
             };
 
-            intervalId = setInterval(checkStatus, 3000);
+            intervalId = setInterval(checkStatus, checkStatusInterval);
         }
 
         return () => {

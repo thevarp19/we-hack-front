@@ -4,7 +4,7 @@ export interface UserProfile {
     username: string;
     email: string;
     photoUrl?: string;
-    is_email_confirmed: boolean;
+    profile: { is_email_confirmed: boolean };
 }
 
 export interface RegisterData {
