@@ -40,7 +40,7 @@ export default function ChatLayout({
 
     return (
         <div className={clsx("h-full w-screen fixed top-0 left-0 ")}>
-            <div className="h-[96px] relative -z-10"></div>
+            <div className="h-[64px] sm:h-[96px] relative -z-10"></div>
             {/* <Header /> */}
             <div className="flex max-sm:h-[calc(100%-4rem)] h-[calc(100%-6rem)]">
                 <div className={clsx("overflow-y-auto w-full")}>{children}</div>

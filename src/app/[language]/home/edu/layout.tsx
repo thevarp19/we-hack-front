@@ -27,10 +27,12 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                         <br className="sm:hidden" /> an employee
                     </Link>
                 </div>
-                {children}
+                <div className="grow h-max overflow-y-scroll bx-hidden-scroll sm:w-[660px]">
+                    {children}
+                </div>
                 <div className="min-h-[90px]"></div>
                 <div className=" bg-white flex items-center  justify-center fixed left-0 bottom-0 w-screen">
-                    <div className=" py-5 px-5 flex items-center  justify-between gap-10 border-t text-base">
+                    <div className="py-5 px-5 flex items-center justify-between w-full sm:w-[660px] border-t text-base">
                         <Link
                             href="/en/home/edu"
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer"

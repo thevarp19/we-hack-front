@@ -6,7 +6,7 @@ interface LogoProps {
     href?: string;
 }
 
-export const Logo: FC<LogoProps> = ({ href = "/" }) => {
+export const Logo: FC<LogoProps> = ({ href = "/en/home/" }) => {
     return (
         <Link
             href={href}

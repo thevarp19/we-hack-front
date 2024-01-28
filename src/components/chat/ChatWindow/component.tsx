@@ -20,6 +20,7 @@ export const ChatWindow: FC<ChatType> = ({ title, messages }) => {
                             objectFit: "cover",
                             objectPosition: "center",
                         }}
+                        className="max-sm:w-[50px]"
                         width={70}
                         height={70}
                         loading="lazy"

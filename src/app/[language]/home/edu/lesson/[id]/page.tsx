@@ -25,7 +25,7 @@ export default function LessonPage() {
     });
     const [activeContent, setActiveContent] = useState(0);
     const nextContent = () => {
-        if (activeContent < mockLessonContent.length - 1) {
+        if (activeContent < (lessonData?.lessonContents?.length || 0) - 1) {
             setAnimation("left");
             setActiveContent((prev) => prev + 1);
             setTimeout(() => {
@@ -44,7 +44,9 @@ export default function LessonPage() {
     };
     const { message } = App.useApp();
     const onQuestion = async (answer: boolean) => {
-        if (mockLessonContent[activeContent].isTitleValid === answer) {
+        if (
+            lessonData?.lessonContents?.[activeContent].isTitleValid === answer
+        ) {
             await message.success("Correct answer", 1);
         } else {
             await message.error("Wrong answer", 1);
@@ -81,11 +83,17 @@ export default function LessonPage() {
                     className="relative w-max"
                 >
                     <h1 className="w-[400px] text-base mb-5">
-                        {mockLessonContent[activeContent].title}
+                        {lessonData?.lessonContents?.[activeContent].title}
                     </h1>
                     <Image
-                        src={mockLessonContent[activeContent].photoUrl}
-                        alt={mockLessonContent[activeContent].title}
+                        src={
+                            lessonData?.lessonContents?.[activeContent]
+                                .photoUrl || ""
+                        }
+                        alt={
+                            lessonData?.lessonContents?.[activeContent].title ||
+                            ""
+                        }
                         width={400}
                         height={400}
                     />
@@ -97,8 +105,9 @@ export default function LessonPage() {
                         className="absolute top-0 right-0 w-1/2 h-full z-30"
                         onClick={() => {
                             if (
-                                typeof mockLessonContent[activeContent]
-                                    .isTitleValid !== "boolean"
+                                typeof lessonData?.lessonContents?.[
+                                    activeContent
+                                ].isTitleValid !== "boolean"
                             ) {
                                 nextContent();
                             }
@@ -109,8 +118,9 @@ export default function LessonPage() {
                     <div
                         className={clsx("flex justify-between mt-5", {
                             invisible:
-                                typeof mockLessonContent[activeContent]
-                                    .isTitleValid !== "boolean",
+                                typeof lessonData?.lessonContents?.[
+                                    activeContent
+                                ].isTitleValid !== "boolean",
                         })}
                     >
                         <Button
