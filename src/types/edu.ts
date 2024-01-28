@@ -1,4 +1,5 @@
 export interface CourseDetailsType {
+    id?: string;
     title: string;
     photoUrl: string;
     level: CourseLevelType;

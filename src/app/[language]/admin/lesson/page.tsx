@@ -33,7 +33,7 @@ export default function CreateLessonPage() {
     return (
         <main className="flex flex-col h-screen py-14 gap-10 items-center px-5 overflow-y-scroll bx-hidden-scroll">
             <h1 className="uppercase text-2xl font-bold text-primary">
-                Create lesson
+                Create a lesson
             </h1>
             <div className="w-full max-w-xs sm:max-w-sm">
                 <Steps
@@ -67,7 +67,7 @@ export default function CreateLessonPage() {
                             formik={formik}
                             formItemProps={{ className: clsx("w-full") }}
                             inputProps={{
-                                placeholder: "Course title",
+                                placeholder: "Lesson title",
                                 size: "large",
                             }}
                         />

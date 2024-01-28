@@ -91,7 +91,7 @@ export const getItemsByAttribute = async (
     querySnapshot.forEach((doc) => {
         if (doc.exists()) {
             const data = doc.data();
-            items.push(data);
+            items.push({ ...data, id: doc.id });
         }
     });
 

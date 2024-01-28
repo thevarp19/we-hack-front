@@ -43,7 +43,7 @@ export default function CreateCoursePage() {
     return (
         <main className="flex flex-col h-screen justify-center gap-10 items-center px-5">
             <h1 className="uppercase text-2xl font-bold text-primary">
-                Create course
+                Create a course
             </h1>
             <div className="w-full max-w-xs sm:max-w-sm">
                 <Steps
