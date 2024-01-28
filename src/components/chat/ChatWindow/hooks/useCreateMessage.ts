@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export const useCreateMessage = () => {
     const [messageValue, setMessageValue] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { addMessage, setIsUpdated } = useChatContext();
+    const { addMessage } = useChatContext();
     const queryClient = useQueryClient();
     const [runId, setRunId] = useState<string | null>(null);
 
@@ -16,7 +16,6 @@ export const useCreateMessage = () => {
         return {
             content: messageValue,
             role: "user",
-            // time: Date.now(),
         };
     };
 
@@ -27,21 +26,21 @@ export const useCreateMessage = () => {
             setMessageValue("");
             addMessage(data);
             const response = await sendMessage(data);
-            setRunId(response.data.run_id);
+            setRunId(response?.data?.run_id);
         } catch (error) {
             console.error("Error:", error);
         }
     };
+
     useEffect(() => {
         let intervalId: string | number | NodeJS.Timeout | undefined;
-
         if (runId) {
             const checkStatusInterval = 3000;
             const checkStatus = () => {
                 getAnswer(runId)
                     .then((response: AxiosResponse<AnswerType>) => {
                         const data = response.data;
-                        if (data.status === "completed") {
+                        if (data?.status === "completed") {
                             queryClient.invalidateQueries({
                                 queryKey: ["get_chat"],
                             });
@@ -71,5 +70,6 @@ export const useCreateMessage = () => {
         messageValue,
         setMessageValue,
         createMessage,
+        setRunId,
     };
 };

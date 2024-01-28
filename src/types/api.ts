@@ -11,6 +11,7 @@ export interface RegisterDTO {
 }
 
 export interface UserProfileDTO {
+    is_email_confirmed: boolean;
     email: string;
     first_name: string;
     last_name: string;

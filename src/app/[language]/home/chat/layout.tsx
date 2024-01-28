@@ -6,7 +6,6 @@ import { Spin } from "antd";
 import { useRouter } from "next/navigation";
 // import { getUser } from "@/modules/Auth/api";
 // import { useAuthStore } from "@/modules/Auth/store/useAuth";
-import { Header } from "@/components/ui/Header";
 import { useAuthContext } from "@/context/AuthContext";
 // import { User } from "@/lib/types/user";
 export default function ChatLayout({
@@ -40,8 +39,9 @@ export default function ChatLayout({
     }
 
     return (
-        <div className={clsx("h-full w-screen fixed top-0 left-0")}>
-            <Header />
+        <div className={clsx("h-full w-screen fixed top-0 left-0 ")}>
+            <div className="h-[96px] relative -z-10"></div>
+            {/* <Header /> */}
             <div className="flex max-sm:h-[calc(100%-4rem)] h-[calc(100%-6rem)]">
                 <div className={clsx("overflow-y-auto w-full")}>{children}</div>
             </div>

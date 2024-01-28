@@ -2,6 +2,7 @@ import { MessageType } from "@/types/chat";
 // import { groupTimestamps } from "@/utils/time.util";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
+import { DefaultMessages } from "./DefaultMessages";
 import { Message } from "./Message";
 export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
     const listButtomRef = useRef(null);
@@ -14,7 +15,7 @@ export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
         }, 0);
     }, [messages]);
     function createMarkup(text: string) {
-        return { __html: text.replace(/\n/g, "<br />") };
+        return { __html: text?.replace(/\n/g, "<br />") };
     }
 
     return (
@@ -27,6 +28,8 @@ export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
                 "md:px-5 lg:px-10"
             )}
         >
+            {" "}
+            {messages?.length < 6 && <DefaultMessages />}
             {messages?.map((message, index) => {
                 return (
                     <Message

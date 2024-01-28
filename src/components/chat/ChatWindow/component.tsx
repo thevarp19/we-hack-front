@@ -17,6 +17,7 @@ export const ChatWindow: FC<ChatType> = ({ title, messages }) => {
                 </p>
             </ChatHeader>
             <MessagesList messages={messages} />
+
             <MessageComposer {...createChat} />
         </main>
     );

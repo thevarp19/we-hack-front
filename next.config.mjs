@@ -4,6 +4,7 @@ const nextConfig = {
         unoptimized: true,
         domains: ["img.freepik.com"],
     },
+    reactStrictMode: false,
 };
 
 export default nextConfig;
