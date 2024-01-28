@@ -1,11 +1,28 @@
 "use client";
-import { LessonContentType } from "@/types/edu";
+import { Loading } from "@/components/shared/Loading";
+import { axiosShared } from "@/lib/axios";
+import { LessonContentType, LessonType } from "@/types/edu";
+import { useQuery } from "@tanstack/react-query";
 import { App, Button, Card } from "antd";
+import clsx from "clsx";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function LessonPage() {
+    const params = useParams();
+    const lessonId = params.id;
+    const { data: lessonData, isPending } = useQuery<LessonType>({
+        queryKey: ["course", lessonId],
+        queryFn: async () => {
+            const { data } = await axiosShared.get<LessonType>(
+                `/api/edu/lesson/?id=${lessonId}`
+            );
+            return data;
+        },
+        retry: 2,
+    });
     const [activeContent, setActiveContent] = useState(0);
     const nextContent = () => {
         if (activeContent < mockLessonContent.length - 1) {
@@ -54,22 +71,23 @@ export default function LessonPage() {
         },
     };
     return (
-        <div className="w-max">
+        <div className="w-full py-10 flex justify-center">
+            {isPending && <Loading isFullScreen />}
             <Card className="">
                 <motion.div
                     initial="initial"
                     animate={animation}
                     variants={variants}
-                    className="relative  w-max"
+                    className="relative w-max"
                 >
-                    <h1 className="w-[300px]">
+                    <h1 className="w-[400px] text-base mb-5">
                         {mockLessonContent[activeContent].title}
                     </h1>
                     <Image
                         src={mockLessonContent[activeContent].photoUrl}
                         alt={mockLessonContent[activeContent].title}
-                        width={300}
-                        height={100}
+                        width={400}
+                        height={400}
                     />
                     <div
                         className="absolute top-0 left-0 w-1/2 h-full z-30"
@@ -87,9 +105,14 @@ export default function LessonPage() {
                         }}
                     />
                 </motion.div>
-                {typeof mockLessonContent[activeContent].isTitleValid ===
-                    "boolean" && (
-                    <div className="flex justify-between">
+                {
+                    <div
+                        className={clsx("flex justify-between mt-5", {
+                            invisible:
+                                typeof mockLessonContent[activeContent]
+                                    .isTitleValid !== "boolean",
+                        })}
+                    >
                         <Button
                             onClick={() => {
                                 onQuestion(true);
@@ -105,7 +128,7 @@ export default function LessonPage() {
                             False
                         </Button>
                     </div>
-                )}
+                }
             </Card>
         </div>
     );
