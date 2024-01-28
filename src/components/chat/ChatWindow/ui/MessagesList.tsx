@@ -1,10 +1,17 @@
 import { MessageType } from "@/types/chat";
 // import { groupTimestamps } from "@/utils/time.util";
+import { Spin } from "antd";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
 import { DefaultMessages } from "./DefaultMessages";
 import { Message } from "./Message";
-export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
+export const MessagesList = ({
+    messages,
+    isLoading,
+}: {
+    messages: MessageType[];
+    isLoading: boolean;
+}) => {
     const listButtomRef = useRef(null);
     useEffect(() => {
         setTimeout(() => {
@@ -29,7 +36,7 @@ export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
             )}
         >
             {" "}
-            {messages?.length < 6 && <DefaultMessages />}
+            {messages?.length === 0 && <DefaultMessages />}
             {messages?.map((message, index) => {
                 return (
                     <Message
@@ -44,6 +51,14 @@ export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
                     </Message>
                 );
             })}
+            <div className="opacity-50 ">
+                {isLoading && (
+                    <span className="flex items-center gap-2">
+                        Typing
+                        <Spin size="small" />
+                    </span>
+                )}
+            </div>
             <div ref={listButtomRef}></div>{" "}
         </section>
     );

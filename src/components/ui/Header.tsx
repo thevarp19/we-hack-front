@@ -3,7 +3,6 @@ import { getConfirm } from "@/api/chat";
 import { useAuthContext } from "@/context/AuthContext";
 import { Spin } from "antd";
 import clsx from "clsx";
-import { ShieldSlash, ShieldTick } from "iconsax-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -49,51 +48,37 @@ export const Header = () => {
                 <Logo href="/en/home" />
                 <Link
                     href="/en/home/chat"
-                    className="text-2xl flex gap-4 text-yellow uppercase font-medium hover:text-gray cursor-pointer"
+                    className="text-2xl flex gap-4 text-yellow font-medium hover:text-gray cursor-pointer"
                 >
                     Chat
                 </Link>
                 <Link
                     href="/en/home/edu"
-                    className="text-2xl flex gap-4 text-yellow uppercase font-medium hover:text-gray cursor-pointer"
+                    className="text-2xl flex gap-4 text-yellow font-medium hover:text-gray cursor-pointer"
                 >
-                    Education
+                    Edu
                 </Link>
             </div>
-            <div className="flex z-50 gap-5">
-                <div>
+            <div className="hidden sm:flex z-50 gap-5 ">
+                <div className="flex items-center justify-center">
                     <div>
                         <h2 className="font-medium sm:text-lg">{`${userProfile?.first_name} ${userProfile?.last_name}`}</h2>
-
-                        <h2 className="flex items-center">
-                            {confirmEmail ? (
-                                <>
-                                    <ShieldTick size="32" color="#00805f" />
-                                    Email verified.
-                                </>
-                            ) : (
-                                <>
-                                    <ShieldSlash size="32" color="#FF0000" />
-                                    Email not confirmed.
-                                </>
-                            )}
-                        </h2>
                     </div>
                     <div>
-                        <button
+                        {/* <button
                             onClick={handleConfirmEmail}
                             className={`opacity-50 text-xs bg-yellow rounded-lg px-1 sm:line-height-lg ${
                                 confirmEmail && "hidden"
                             }`}
                         >
                             Confirm email
-                        </button>
+                        </button> */}
                     </div>
                 </div>
                 <a
                     // href="/login"
                     onClick={logout}
-                    className="bg-yellow h-fit text-black rounded-md py-3 px-5 w-fit sm:line-height-lg"
+                    className="text-primary rounded-md py-3 px-5 w-fit sm:line-height-lg"
                 >
                     Logout
                 </a>
