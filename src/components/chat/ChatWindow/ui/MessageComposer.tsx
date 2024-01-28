@@ -8,6 +8,12 @@ export const MessageComposer = ({
     handleSendMessage,
     createMessage,
 }: any) => {
+    const handleKeyPress = (e: any) => {
+        if (e.key === "Enter" && messageValue.trim() !== "") {
+            handleSendMessage(createMessage());
+            e.preventDefault();
+        }
+    };
     return (
         <div className="px-4 sm:px-8 max-sm:py-3 py-5 flex gap-4 justify-between items-center">
             <CustomTextArea
@@ -15,12 +21,15 @@ export const MessageComposer = ({
                 onChange={(e) => {
                     setMessageValue(e.target.value);
                 }}
+                onKeyDown={handleKeyPress}
             />
             <div className="flex items-center">
                 <Button
                     type="text"
                     onClick={() => {
-                        handleSendMessage(createMessage());
+                        if (messageValue.trim() !== "") {
+                            handleSendMessage(createMessage());
+                        }
                     }}
                 >
                     <Send2 color="#00805f" />
