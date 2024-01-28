@@ -171,16 +171,33 @@ const LessonContentInput = ({
         },
     ]);
     useEffect(() => {
-        formik.values.lessonContents?.map((content, idx) => {
-            if (idx == index) {
-                return {
-                    ...content,
-                    photoUrl: fileList[0]?.url,
-                };
-            }
-            return content;
-        });
+        formik.setFieldValue(
+            "lessonContents",
+            formik.values.lessonContents?.map((content, idx) => {
+                if (idx == index) {
+                    let link = fileList[0]?.response?.data?.pc_image;
+                    link = link?.substring(
+                        0,
+                        link?.indexOf("?X-Goog-Algorithm") == -1
+                            ? undefined
+                            : link?.indexOf("?X-Goog-Algorithm")
+                    );
+                    if (!link || link.length == 0) {
+                        link =
+                            "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg";
+                    }
+                    return {
+                        ...content,
+                        photoUrl: link,
+                    };
+                }
+                return content;
+            })
+        );
     }, [fileList]);
+    useEffect(() => {
+        console.log(formik.values);
+    }, [formik.values]);
     return (
         <div className="flex flex-col py-5 gap-5 border-b">
             <TextArea

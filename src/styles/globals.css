@@ -19,16 +19,16 @@ img {
 }
 
 ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    width: 2px;
+    height: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: black;
+    background: #fbae16;
 }
 
 ::-webkit-scrollbar-track {
-    background: gray;
+    background: #ededed;
 }
 
 input::-webkit-outer-spin-button,

@@ -1,4 +1,6 @@
+"use client";
 import { Logo } from "@/components/shared/Logo";
+import { useAuthContext } from "@/context/AuthContext";
 import {
     HomeOutlined,
     LogoutOutlined,
@@ -11,8 +13,9 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 export default function EduLayout({ children }: { children?: ReactNode }) {
+    const { logout } = useAuthContext();
     return (
-        <div className="flex justify-center w-screen h-screen">
+        <div className="flex justify-center w-screen h-screen fixed top-0 left-0 z-[80] bg-white">
             <div className="flex flex-col min-w-[90%] sm:min-w-[620px]">
                 <div className="py-5 px-5 border-b flex items-center  justify-between">
                     <Logo />
@@ -36,14 +39,14 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                             Courses
                         </Link>
                         <Link
-                            href="/en/home/edu/profile"
+                            href="#"
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer"
                         >
                             <ProfileOutlined />
                             Profile
                         </Link>
                         <Link
-                            href="/en/home/edu/profile"
+                            href="/en/home/chat"
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer"
                         >
                             <RobotOutlined />
@@ -57,7 +60,8 @@ export default function EduLayout({ children }: { children?: ReactNode }) {
                             Admin
                         </Link>
                         <Link
-                            href="/en/auth/logout"
+                            href="#"
+                            onClick={logout}
                             className="flex flex-col items-center gap-1 text-[#000] hover:text-primary cursor-pointer max-sm:hidden"
                         >
                             <LogoutOutlined />
