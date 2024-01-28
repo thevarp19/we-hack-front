@@ -1,8 +1,7 @@
-import { useLogin } from "@/hooks/auth/useLogin";
+import { useFormInfo } from "@/hooks/auth/useFormInfo";
 import { Button, Form } from "antd";
 import clsx from "clsx";
 import React from "react";
-import * as Yup from "yup";
 import { FormikInput } from "./FormikInput";
 
 // Define the type for your form fields
@@ -16,28 +15,9 @@ interface FormValues {
 }
 
 // Validation Schema
-const ValidationSchema = Yup.object().shape({
-    statement: Yup.string().required("Required"),
-    iin: Yup.string().required("Required"),
-    policy_number: Yup.string().required("Required"),
-    medical_documents: Yup.string().url("Invalid URL").required("Required"),
-    status: Yup.string().required("Required"),
-});
 
 const MyForm: React.FC = () => {
-    const { formik, mutation } = useLogin();
-    const initialValues: FormValues = {
-        id: 1,
-        statement: "",
-        iin: "",
-        policy_number: "",
-        medical_documents: "",
-        status: "",
-    };
-
-    const handleSubmit = (values: FormValues) => {
-        console.log(values);
-    };
+    const { formik, mutation } = useFormInfo();
 
     return (
         <Form onFinish={formik.submitForm}>

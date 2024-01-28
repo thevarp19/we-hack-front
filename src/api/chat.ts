@@ -10,6 +10,9 @@ export const defaultMsg = () => {
 export const sendMessage = (message: MessageType) => {
     return axiosAuthorized.post(`api/chat/`, message);
 };
+export const compensationSend = (data: any) => {
+    return axiosAuthorized.post(`api/compensation/`, data);
+};
 export const getAnswer = (run_id: string) => {
     return axiosAuthorized.get(`api/chat/answer/${run_id}`);
 };
