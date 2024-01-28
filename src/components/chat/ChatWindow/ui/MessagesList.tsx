@@ -29,7 +29,7 @@ export const MessagesList = ({ messages }: { messages: MessageType[] }) => {
             )}
         >
             {" "}
-            {messages?.length < 99 && <DefaultMessages />}
+            {messages?.length === 0 && <DefaultMessages />}
             {messages?.map((message, index) => {
                 return (
                     <Message

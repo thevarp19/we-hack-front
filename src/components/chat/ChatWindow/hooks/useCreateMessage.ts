@@ -39,17 +39,11 @@ export const useCreateMessage = () => {
                 getAnswer(runId)
                     .then((response: AxiosResponse<AnswerType>) => {
                         const data = response.data;
-                        console.log("Response Data:", data);
                         if (data?.status === "completed") {
                             queryClient.invalidateQueries({
                                 queryKey: ["get_chat"],
                             });
-                            if (data?.content) {
-                                console.log("Adding message:", data.content);
-                                addMessage(data.content);
-                            } else {
-                                console.log("No answer in data:", data);
-                            }
+                            addMessage(data.answer);
                             setIsLoading(false);
                             clearInterval(intervalId);
                         }
