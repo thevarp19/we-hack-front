@@ -10,7 +10,8 @@ export const Loading: FC<LoadingProps> = ({ isFullScreen }) => {
     return (
         <div
             className={clsx("flex items-center justify-center w-full h-full", {
-                "w-screen h-screen": isFullScreen,
+                "w-screen h-screen fixed top-0 left-0 z-[99] bg-white":
+                    isFullScreen,
             })}
         >
             <Spin size="large" />
