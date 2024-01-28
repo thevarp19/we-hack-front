@@ -1,7 +1,7 @@
 "use client";
 import { axiosShared } from "@/lib/axios";
-import { CourseDetailsType } from "@/types/edu";
-import { requiredNumberSchema, requiredStringSchema } from "@/utils/form.util";
+import { LessonType } from "@/types/edu";
+import { requiredStringSchema } from "@/utils/form.util";
 import { useMutation } from "@tanstack/react-query";
 import { App } from "antd";
 import { useFormik } from "formik";
@@ -10,25 +10,22 @@ import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
     title: requiredStringSchema(),
-    photoUrl: requiredStringSchema(),
-    level: requiredStringSchema(),
-    duringInHours: requiredNumberSchema().min(1),
-    description: requiredStringSchema(),
-    skills: Yup.array().of(Yup.string()).required(),
-    goals: Yup.array().of(Yup.string()).required(),
 });
 
-export const useCreateCourse = () => {
+export const useCreateLesson = (courseId: string) => {
     const router = useRouter();
 
     const { message } = App.useApp();
 
     const mutation = useMutation({
-        mutationFn: async (value: CourseDetailsType) => {
-            const { data } = await axiosShared.post("/api/admin/course", value);
+        mutationFn: async (value: LessonType) => {
+            const { data } = await axiosShared.post<{ lessonId: string }>(
+                "/api/admin/lesson",
+                { ...value, courseId }
+            );
             return data;
         },
-        onSuccess() {
+        onSuccess(data) {
             message.success("Success!");
             router.push("/en/admin/");
         },
@@ -41,16 +38,16 @@ export const useCreateCourse = () => {
         await mutation.mutateAsync(formik.values);
     };
 
-    const formik = useFormik<CourseDetailsType>({
+    const formik = useFormik<LessonType>({
         initialValues: {
             title: "",
-            photoUrl:
-                "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
-            level: "beginner",
-            duringInHours: 0,
-            description: "",
-            skills: [],
-            goals: [],
+            lessonContents: [
+                {
+                    title: "Example title",
+                    photoUrl:
+                        "https://img.freepik.com/free-psd/3d-illustration-people-with-gadget-use-highspeed-internet_1150-65899.jpg?size=626&ext=jpg",
+                },
+            ],
         },
         validationSchema: validationSchema,
         validateOnBlur: true,

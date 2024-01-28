@@ -26,6 +26,7 @@ import {
 interface MultiplePhotoUploadProps {
     fileList: UploadFile[];
     setFileList: Dispatch<SetStateAction<UploadFile[]>>;
+    maxCount?: number;
     doesCompress?: boolean;
     doesOptimizePhoto?: boolean;
 }
@@ -33,6 +34,7 @@ interface MultiplePhotoUploadProps {
 export const MultiplePhotoUpload: FC<MultiplePhotoUploadProps> = ({
     fileList,
     setFileList,
+    maxCount = 10,
     doesCompress = true,
     doesOptimizePhoto = false,
 }) => {
@@ -69,6 +71,7 @@ export const MultiplePhotoUpload: FC<MultiplePhotoUploadProps> = ({
                 strategy={verticalListSortingStrategy}
             >
                 <Upload.Dragger
+                    maxCount={maxCount}
                     customRequest={customRequest}
                     fileList={fileList}
                     onChange={onChange}
