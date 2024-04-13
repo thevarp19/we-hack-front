@@ -1,7 +1,7 @@
 import jwtService from "@/lib/jwt";
 import axios, { Axios } from "axios";
 
-const refreshJwtUrl = `/api/login/refresh/`;
+const refreshJwtUrl = `/api/auth/token/refresh/`;
 const unauthorizedStatus = 401;
 
 export const createAxiosWithBaseUrl = (baseURL: string) => {

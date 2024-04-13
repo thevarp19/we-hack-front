@@ -3,27 +3,12 @@ import { register } from "@/api/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { RegisterDTO } from "@/types/api";
 import { RegisterData } from "@/types/auth";
-import { emailSchema, requiredStringSchema } from "@/utils/form.util";
 import { useMutation } from "@tanstack/react-query";
 import { App } from "antd";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 
-const validationSchema = Yup.object().shape({
-    username: requiredStringSchema(),
-    firstName: requiredStringSchema(),
-    lastName: requiredStringSchema(),
-    email: emailSchema,
-    password: requiredStringSchema().max(20).min(6),
-    repeatPassword: requiredStringSchema().test(
-        "password-match",
-        "Passwords must match",
-        function (value) {
-            return value === this.parent.password;
-        }
-    ),
-});
+// const validationSchema = Yup.object().shape({});
 
 export const useRegister = () => {
     const router = useRouter();
@@ -44,27 +29,30 @@ export const useRegister = () => {
 
     const handleSubmit = async () => {
         const registerDTO: RegisterDTO = {
-            username: formik.values.username,
-            first_name: formik.values.firstName,
-            last_name: formik.values.lastName,
+            first_name: formik.values.first_name,
+            last_name: formik.values.last_name,
             email: formik.values.email,
             password: formik.values.password,
+            profile: {
+                address: formik.values.profile.address,
+                phone_number: formik.values.profile.phone_number,
+            },
         };
         await mutation.mutateAsync(registerDTO);
     };
 
     const formik = useFormik<RegisterData>({
         initialValues: {
-            username: "",
-            firstName: "",
-            lastName: "",
+            first_name: "",
+            last_name: "",
             email: "",
             password: "",
             repeatPassword: "",
+            profile: { address: "", phone_number: "" },
         },
-        validationSchema: validationSchema,
-        validateOnBlur: true,
-        validateOnChange: false,
+        // validationSchema: validationSchema,
+        // validateOnBlur: true,
+        // validateOnChange: false,
         onSubmit: handleSubmit,
     });
     return { formik, mutation };

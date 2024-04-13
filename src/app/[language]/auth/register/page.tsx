@@ -1,163 +1,209 @@
 "use client";
-import {
-    FormikInput,
-    FormikPasswordInput,
-} from "@/components/form/FormikInput";
 import { Logo } from "@/components/shared/Logo";
 import { useLanguage } from "@/context/LanguageContext";
 import { useRegister } from "@/hooks/auth/useRegister";
-import { SolutionOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Steps } from "antd";
-import clsx from "clsx";
+import { Switch } from "@headlessui/react";
+
 import Link from "next/link";
 import { useState } from "react";
 
+function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+}
 export default function RegisterPage() {
-    const { formik, mutation } = useRegister();
+    const { formik } = useRegister();
     const { getHref } = useLanguage();
-    const [current, setCurrent] = useState(0);
+    const [agreed, setAgreed] = useState(false);
 
-    const next = () => {
-        if (
-            formik.values.username == "" ||
-            formik.values.firstName == "" ||
-            formik.values.lastName == ""
-        ) {
-            formik.setFieldTouched("username");
-            formik.setFieldTouched("firstName");
-            formik.setFieldTouched("lastName");
-
-            return;
-        }
-        setCurrent(current + 1);
-    };
-
-    const prev = () => {
-        setCurrent(current - 1);
-    };
     return (
-        <main className="flex flex-col h-screen justify-center gap-10 items-center px-5">
+        <div
+            className="
+         bg-white px-6 py-10 sm:py-12 lg:px-8 flex flex-col items-center justify-center"
+        >
             <Logo />
-            <div className="w-full max-w-xs sm:max-w-sm">
-                <Steps
-                    responsive={false}
-                    className="!mb-10"
-                    current={1}
-                    items={[
-                        {
-                            title: "Profile",
-                            icon: <UserOutlined />,
-                        },
-                        {
-                            title: "Account",
-                            icon: <SolutionOutlined />,
-                            status: current == 1 ? "process" : "wait",
-                        },
-                    ]}
-                />
-                <Form
-                    onFinish={formik.submitForm}
-                    className="flex flex-col items-center gap-2 w-full px-10"
-                >
-                    <div className={clsx({ hidden: current == 1 }, "w-full")}>
-                        <FormikInput
-                            name="username"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "Username",
-                                size: "large",
-                            }}
-                        />
-                        <FormikInput
-                            name="firstName"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "First name",
-                                size: "large",
-                            }}
-                        />
-                        <FormikInput
-                            name="lastName"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "Last name",
-                                size: "large",
-                            }}
-                        />
-                        <Form.Item className="w-full">
-                            <Button
-                                size={"large"}
-                                onClick={next}
-                                className={clsx("w-full")}
-                            >
-                                Next step
-                            </Button>
-                        </Form.Item>
+
+            <form
+                onSubmit={formik.handleSubmit}
+                className="mx-auto mt-8 max-w-xl sm:mt-10"
+            >
+                <h2 className="text-2xl flex gap-4 text-primary uppercase font-medium pb-6">
+                    Personal info
+                </h2>
+                <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div>
+                        <label
+                            htmlFor="first-name"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            First name
+                        </label>
+                        <div className="mt-2.5">
+                            <input
+                                value={formik.values.first_name}
+                                onChange={formik.handleChange}
+                                type="text"
+                                name="first_name"
+                                id="first_name"
+                                autoComplete="given-name"
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
                     </div>
-                    <div className={clsx({ hidden: current == 0 }, "w-full")}>
-                        <FormikInput
-                            name="email"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "Email",
-                                size: "large",
-                                type: "email",
-                            }}
-                        />
-                        <FormikPasswordInput
-                            name="password"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "Password",
-                                size: "large",
-                                type: "password",
-                            }}
-                        />
-                        <FormikPasswordInput
-                            name="repeatPassword"
-                            formik={formik}
-                            formItemProps={{ className: clsx("w-full") }}
-                            inputProps={{
-                                placeholder: "Repeat password",
-                                size: "large",
-                                type: "password",
-                            }}
-                        />
-                        <Form.Item className="w-full">
-                            <Button
-                                htmlType="submit"
-                                type="primary"
-                                size={"large"}
-                                loading={mutation.isPending}
-                                className={clsx("w-full")}
-                            >
-                                Register
-                            </Button>
-                        </Form.Item>
-                        <Form.Item className="w-full">
-                            <Button
-                                size={"large"}
-                                onClick={prev}
-                                className={clsx("w-full")}
-                            >
-                                Previous
-                            </Button>
-                        </Form.Item>
+                    <div>
+                        <label
+                            htmlFor="last_name"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            Last name
+                        </label>
+                        <div className="mt-2.5">
+                            <input
+                                value={formik.values.last_name}
+                                onChange={formik.handleChange}
+                                type="text"
+                                name="last_name"
+                                id="last_name"
+                                autoComplete="family-name"
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                        <label
+                            htmlFor="email"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            Email
+                        </label>
+                        <div className="mt-2.5">
+                            <input
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                type="email"
+                                name="email"
+                                id="email"
+                                autoComplete="email"
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                        <label
+                            htmlFor="company"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            Password
+                        </label>
+                        <div className="mt-2.5">
+                            <input
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
+                                name="password"
+                                id="password"
+                                autoComplete="password"
+                                type="password"
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
                     </div>
 
+                    <div className="sm:col-span-2">
+                        <label
+                            htmlFor="phone_number"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            Phone number
+                        </label>
+                        <div className="relative mt-2.5">
+                            <input
+                                value={formik.values.profile.phone_number}
+                                onChange={formik.handleChange}
+                                type="tel"
+                                name="profile.phone_number"
+                                id="phone_number"
+                                autoComplete="tel"
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+                    <div className="sm:col-span-2">
+                        <label
+                            htmlFor="address"
+                            className="block text-sm font-semibold leading-6 text-gray-900"
+                        >
+                            Address
+                        </label>
+                        <div className="mt-2.5">
+                            <input
+                                type="text"
+                                name="profile.address"
+                                id="address"
+                                autoComplete="address"
+                                value={formik.values.profile.address}
+                                onChange={formik.handleChange}
+                                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+
+                    <Switch.Group
+                        as="div"
+                        className="flex gap-x-4 sm:col-span-2"
+                    >
+                        <div className="flex h-6 items-center">
+                            <Switch
+                                checked={agreed}
+                                onChange={setAgreed}
+                                className={classNames(
+                                    agreed ? "bg-indigo-600" : "bg-gray-200",
+                                    "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                )}
+                            >
+                                <span className="sr-only">
+                                    Agree to policies
+                                </span>
+                                <span
+                                    aria-hidden="true"
+                                    className={classNames(
+                                        agreed
+                                            ? "translate-x-3.5"
+                                            : "translate-x-0",
+                                        "h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out"
+                                    )}
+                                />
+                            </Switch>
+                        </div>
+                        <Switch.Label className="text-sm leading-6 text-gray-600">
+                            By selecting this, you agree to our{" "}
+                            <a
+                                href="#"
+                                className="font-semibold text-indigo-600"
+                            >
+                                privacy&nbsp;policy
+                            </a>
+                            .
+                        </Switch.Label>
+                    </Switch.Group>
                     <Link
                         href={getHref("/auth/login")}
-                        className="!p-0 !text-primary w-full"
+                        className="!p-0 !text-primary w-full text-sm leading-6"
                     >
                         Already have an account? Log in here
                     </Link>
-                </Form>
-            </div>
-        </main>
+                </div>
+
+                <div className="mt-10">
+                    <button
+                        disabled={!agreed}
+                        className={
+                            "block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        }
+                        type="submit"
+                    >
+                        Register
+                    </button>
+                </div>
+            </form>
+        </div>
     );
 }

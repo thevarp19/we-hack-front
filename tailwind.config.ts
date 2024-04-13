@@ -8,13 +8,6 @@ const config: Config = {
                 roboto: ["var(--font-roboto)"],
             },
         },
-        colors: {
-            white: "white",
-            black: "black",
-            primary: "var(--color-primary)",
-            gray: "var(--color-gray)",
-            yellow: "var(--color-yellow)",
-        },
     },
     plugins: [],
 };

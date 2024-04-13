@@ -3,11 +3,14 @@ export interface LoginDTO {
     password: string;
 }
 export interface RegisterDTO {
-    username: string;
     first_name: string;
     last_name: string;
     email: string;
     password: string;
+    profile: {
+        address: string;
+        phone_number: string;
+    };
 }
 
 export interface UserProfileDTO {

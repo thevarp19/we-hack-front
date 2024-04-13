@@ -6,7 +6,7 @@ export default function HomeLayout({ children }: { children?: ReactNode }) {
     return (
         <AuthProvider>
             <div className="relative z-40">
-                <Header />
+                <Header isMain={false} />
             </div>
             {children}
         </AuthProvider>

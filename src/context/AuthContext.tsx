@@ -1,6 +1,5 @@
 "use client";
-import { Loading } from "@/components/shared/Loading";
-import { useFetchUserProfile } from "@/hooks/query/auth";
+import { verifyAuth } from "@/api/auth";
 import jwtService from "@/lib/jwt";
 import { UserProfile } from "@/types/auth";
 import { useRouter } from "next/navigation";
@@ -10,15 +9,20 @@ import {
     createContext,
     useContext,
     useEffect,
+    useState,
 } from "react";
 import { useLanguage } from "./LanguageContext";
 
 interface AuthContext {
     userProfile?: UserProfile;
     logout: () => void;
+    isAuth: boolean;
 }
 
-export const AuthContext = createContext<AuthContext>({ logout: () => {} });
+export const AuthContext = createContext<AuthContext>({
+    logout: () => {},
+    isAuth: false,
+});
 
 export const useAuthContext = (): AuthContext => {
     const context = useContext(AuthContext);
@@ -29,9 +33,20 @@ export const useAuthContext = (): AuthContext => {
 };
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+    // const { isError, data: userProfile, error } = useFetchUserProfile();
+    const [isAuth, setIsAuth] = useState(false);
     const router = useRouter();
-    const { isError, data: userProfile, error } = useFetchUserProfile();
-
+    async function handleLogin() {
+        const token = jwtService.getAccessToken();
+        try {
+            await verifyAuth(token);
+            setIsAuth(true);
+        } catch (error) {
+            console.error(error);
+            // jwtService.removeJwt();
+            // router.push(getHref("/auth"));
+        }
+    }
     const logout = () => {
         jwtService.removeJwt();
         window.location.href = getHref("/auth/login");
@@ -40,17 +55,10 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     const { getHref } = useLanguage();
 
     useEffect(() => {
-        if (isError) {
-            router.push(getHref("/auth/login"));
-        }
-    }, [isError]);
-
-    if (!userProfile?.username) {
-        return <Loading isFullScreen />;
-    }
-
+        handleLogin();
+    }, []);
     return (
-        <AuthContext.Provider value={{ userProfile, logout }}>
+        <AuthContext.Provider value={{ isAuth, logout }}>
             {children}
         </AuthContext.Provider>
     );

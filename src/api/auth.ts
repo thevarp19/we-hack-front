@@ -15,10 +15,12 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
 };
 
 export const login = async (values: LoginDTO): Promise<JwtDTO> => {
-    const { data } = await axios.post<JwtDTO>("/api/login/", values);
+    const { data } = await axios.post<JwtDTO>("api/auth/token/", values);
     return data;
 };
-
 export const register = async (values: RegisterDTO): Promise<void> => {
-    await axios.post("/api/register/", values);
+    await axios.post("/api/auth/registration/", values);
+};
+export const verifyAuth = async (token: string) => {
+    return await axiosAuthorized.post("api/auth/token/verify/", { token });
 };

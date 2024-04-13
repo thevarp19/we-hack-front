@@ -20,9 +20,13 @@ export default function Page() {
                 initial={{ opacity: 0, scale: 0.5 }}
             >
                 <div className="flex flex-col gap-5">
-                    <Logo href="/en/home" />
+                    <Logo href="#" />
                     <Link href="/en/home">
-                        <Button type="primary" size="large" className="w-full">
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="w-full bg-indigo-600"
+                        >
                             Get started
                         </Button>
                     </Link>

@@ -8,10 +8,13 @@ export interface UserProfile {
 }
 
 export interface RegisterData {
-    username: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
+    profile: {
+        address: string;
+        phone_number: string;
+    };
     repeatPassword: string;
 }

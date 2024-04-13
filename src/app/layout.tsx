@@ -6,7 +6,7 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Halyk Life",
+    title: "OptiCash",
     description: "Web app",
 };
 
@@ -16,8 +16,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={clsx(roboto.variable)}>
+        <html lang="en" className="h-full bg-white">
+            <body className={clsx(roboto.variable, "h-full")}>
                 <QueryProvider>
                     <AntdProvider>{children}</AntdProvider>
                 </QueryProvider>

@@ -13,7 +13,7 @@ export const Logo: FC<LogoProps> = ({ href = "/en/home/" }) => {
             className="text-2xl flex gap-4 text-primary uppercase font-medium hover:text-yellow"
         >
             <Icon src="favicon" />
-            Halyk Life
+            OptiCash
         </Link>
     );
 };
