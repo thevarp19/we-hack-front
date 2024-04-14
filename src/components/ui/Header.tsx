@@ -44,7 +44,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                 aria-label="Global"
             >
                 <div className="flex lg:flex-1">
-                    <Link href="#" className="-m-1.5 p-1.5 flex items-center">
+                    <Link href="/" className="-m-1.5 p-1.5 flex items-center">
                         <img
                             className="h-16 w-auto"
                             src="https://d2vm05b1botqyl.cloudfront.net/images/p13_v3_wgc_nt/quiz/anxious/1.webp"
@@ -104,14 +104,14 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                 <div className="fixed inset-0 z-10" />
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                     <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
+                        <Link href="/" className="-m-1.5 p-1.5">
                             <span className="sr-only">Your Company</span>
                             <img
                                 className="h-8 w-auto"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt=""
                             />
-                        </a>
+                        </Link>
                         <button
                             type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-400"
@@ -135,12 +135,24 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                 ))}
                             </div>
                             <div className="py-6">
-                                <Link
-                                    href={getHref("/auth/login")}
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
-                                >
-                                    Войти
-                                </Link>
+                                {isAuth ? (
+                                    <Link
+                                        onClick={logout}
+                                        href={getHref("#")}
+                                        className="text-sm font-semibold leading-6 text-white"
+                                    >
+                                        Выйти{" "}
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        href={getHref("/auth/login")}
+                                        className="text-sm font-semibold leading-6 text-white"
+                                    >
+                                        Войти{" "}
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
