@@ -25,12 +25,17 @@ export default function ProfilePage() {
 
     return (
         <div className="w-full h-full flex justify-center items-center pt-5 gap-5">
-            <div className="h-full border-2 border-primary p-5 rounded-lg ">
+            <div className="h-full border-2 border-primary bg-gray-100 p-5 rounded-lg ">
                 <h2 className="text-primary text-3xl pb-5 font-bold">
                     My cards
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:min-w-[1064px] md:min-h-[472px]">
                     {isPending && <Spin size="large" />}
+                    {cards && cards.length === 0 && (
+                        <div className="col-span-3 text-center text-lg text-gray-700">
+                            No cards found.
+                        </div>
+                    )}
                     {cards?.map((card: any, key: number) => (
                         <CreditCard
                             key={key}
