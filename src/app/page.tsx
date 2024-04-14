@@ -384,7 +384,7 @@ export default function Page() {
                     <div className="relative overflow-hidden pt-16">
                         <div className="mx-auto max-w-7xl px-6 lg:px-8">
                             <Image
-                                src="/images/screen.png"
+                                src="/images/screen_admin.png"
                                 alt="App screenshot"
                                 className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-white/10"
                                 width={2432}
