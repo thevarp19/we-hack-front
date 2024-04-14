@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const CardForm = () => {
     const queryClient = useQueryClient();
@@ -39,7 +39,7 @@ export const CardForm = () => {
         initialValues: {
             number: "",
             expired_date: "",
-            card_type: null,
+            card_type: "",
             // card_type_name: null,
             // name: "",
         },
@@ -68,6 +68,10 @@ export const CardForm = () => {
         enabled: !!selectedBank,
         retry: 2,
     });
+    useEffect(() => {
+        formik.setFieldValue("card_type", selectedBank);
+    }, [selectedBank, formik.setFieldValue]);
+
     return (
         <div className="bg-gray-50">
             <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -111,6 +115,7 @@ export const CardForm = () => {
                                 value={formik.values.card_type}
                                 id="card_type"
                                 name="card_type"
+                                defaultValue={formik.values.card_type}
                                 className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             >
                                 {cardTypes?.cards.map((type: any) => (
@@ -131,6 +136,7 @@ export const CardForm = () => {
                             </label>
                             <div className="mt-1">
                                 <input
+                                    maxLength={16}
                                     type="text"
                                     id="number"
                                     name="number"
@@ -151,6 +157,7 @@ export const CardForm = () => {
                             </label>
                             <div className="mt-1">
                                 <input
+                                    maxLength={5}
                                     type="text"
                                     name="expired_date"
                                     id="expired_date"

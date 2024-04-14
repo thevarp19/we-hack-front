@@ -1,12 +1,274 @@
 "use client";
+import { CreditCardSmall } from "@/components/card/CreditCardSmall";
+import { axiosAuthorized } from "@/lib/axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { App, Select, Spin } from "antd";
+import { Option } from "antd/lib/mentions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+type Category = {
+    id: string;
+    category: string;
+};
 
+const sortOptions = [
+    { name: "Ask", href: "#", current: true },
+    { name: "Desc", href: "#", current: false },
+];
 export default function HomePage() {
+    const { message } = App.useApp();
     const router = useRouter();
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [ordering, setOrdering] = useState<string>("");
+    const [hasQRPayment, setHasQRPayment] = useState<boolean | null>(null); // Added state for QR payment filter
+    const [hasCardPayment, setHasCardPayment] = useState<boolean | null>(null); // Added state for Card payment filter
+    const [minPercent, setMinPercent] = useState<number | null>(null); // Added state for minimum percent
+    const [maxPercent, setMaxPercent] = useState<number | null>(null); // Added state for maximum percent
+
+    const handleChange = (selectedItems: string[]) => {
+        setSelectedCategories(selectedItems);
+    };
+
+    const handleOrderChange = (value: string) => {
+        setOrdering(value);
+    };
+
+    const { data: categories, isPending } = useQuery<Category[], Error>({
+        queryKey: ["categories"],
+        queryFn: async () => {
+            const { data } = await axiosAuthorized.get(`/api/category/`);
+            return data;
+        },
+        retry: 2,
+    });
+
+    const fetchCashback = async () => {
+        let queryString = selectedCategories.reduce(
+            (acc, cur) => `${acc}category=${cur}&`,
+            ""
+        );
+        queryString += ordering ? `ordering=${ordering}&` : "";
+        queryString +=
+            hasQRPayment !== null ? `has_qr_payment=${hasQRPayment}&` : "";
+        queryString +=
+            hasCardPayment !== null
+                ? `has_card_payment=${hasCardPayment}&`
+                : "";
+        queryString += minPercent !== null ? `min_percent=${minPercent}&` : "";
+        queryString += maxPercent !== null ? `max_percent=${maxPercent}` : "";
+
+        const { data } = await axiosAuthorized.get(
+            `/api/cashback/get_user_cashbacks/?${queryString}`
+        );
+        return data;
+    };
+
+    const cashbackMutation = useMutation({
+        mutationFn: fetchCashback,
+        onSuccess: (data) => {
+            console.log(data);
+            message.success("Cashback data retrieved successfully!");
+        },
+        onError: (error) => {
+            console.error(error);
+            message.error("Error fetching cashback data!");
+        },
+    });
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!selectedCategories.length) {
+            message.warning("Please select at least one category.");
+            return;
+        }
+        cashbackMutation.mutate();
+    };
 
     return (
-        <div className="flex flex-col">
-            <div className=" bg-white flex items-center  justify-center fixed left-0 bottom-0 w-screen"></div>
+        <div className="min-h-screen w-full bg-white shadow sm:rounded-lg">
+            <div className="flex flex-col items-center w-full px-4 py-5 sm:p-6 gap-5">
+                <div>
+                    <h3 className="text-base font-semibold leading-6 text-gray-900">
+                        Select your product category
+                    </h3>
+
+                    <form
+                        onSubmit={handleSubmit}
+                        className="mt-5 w-full max-w-80 flex flex-col items-center gap-5 pb-10"
+                    >
+                        <div className="w-full sm:max-w-xs flex items-center ">
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{ width: "100%" }}
+                                placeholder="Select categories"
+                                value={selectedCategories}
+                                onChange={handleChange}
+                            >
+                                {categories?.map((category: Category) => (
+                                    <Option
+                                        key={category.id}
+                                        value={category.id}
+                                    >
+                                        {category.category}
+                                    </Option>
+                                ))}
+                            </Select>
+
+                            {/* <Spin size="small" spinning={isPending} /> */}
+                        </div>
+                        <Select
+                            style={{ width: "100%" }}
+                            placeholder="Sort by"
+                            onChange={handleOrderChange}
+                            allowClear
+                        >
+                            <Select.Option value="percent">
+                                Ascending by Percent
+                            </Select.Option>
+                            <Select.Option value="-percent">
+                                Descending by Percent
+                            </Select.Option>
+                        </Select>
+                        {/* Payment filters: QR and Card Payment */}
+                        <div className="grid grid-cols-2 grid-template-areas gap-x-14 w-full">
+                            <Select
+                                style={{ width: "100%" }}
+                                placeholder="QR Payment"
+                                onChange={(value) =>
+                                    setHasQRPayment(value === "true")
+                                }
+                            >
+                                <Option value="true">Yes</Option>
+                                <Option value="false">No</Option>
+                            </Select>
+                            <Select
+                                style={{ width: "100%" }}
+                                placeholder="Card Payment"
+                                onChange={(value) =>
+                                    setHasCardPayment(value === "true")
+                                }
+                            >
+                                <Option value="true">Yes</Option>
+                                <Option value="false">No</Option>
+                            </Select>
+                        </div>
+
+                        <input
+                            className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            type="number"
+                            placeholder="Min Percent"
+                            onChange={(e) =>
+                                setMinPercent(parseFloat(e.target.value))
+                            }
+                        />
+                        <input
+                            className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            type="number"
+                            placeholder="Max Percent"
+                            onChange={(e) =>
+                                setMaxPercent(parseFloat(e.target.value))
+                            }
+                        />
+
+                        <button
+                            type="submit"
+                            className="mt-3 inline-flex min-w-80 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  sm:w-auto"
+                        >
+                            Analyze
+                        </button>
+                    </form>
+                </div>
+                {cashbackMutation.isPending && <Spin size="large" />}
+                {cashbackMutation?.data?.user_cashbacks && (
+                    <div className="mx-auto min-w-auto lg:max-w-5xl sm:min-w-[600px] px-4 sm:px-6 lg:px-8">
+                        <div className="mx-auto min-w-[320px] max-w-2xl lg:mx-0 lg:max-w-none border border-gray-200 rounded-md">
+                            <div className="flex items-center justify-between ">
+                                <div className="w-full border-b border-gray-200 bg-gray-50 p-3">
+                                    <h2 className="text-base font-semibold leading-7 text-gray-900">
+                                        Your cards
+                                    </h2>
+                                </div>
+                            </div>
+                            <ul
+                                role="list"
+                                className=" grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 p-5"
+                            >
+                                {cashbackMutation?.data?.user_cashbacks
+                                    ?.length > 0 ? (
+                                    cashbackMutation.data.user_cashbacks.map(
+                                        (card: any, key: number) => (
+                                            <CreditCardSmall
+                                                key={key}
+                                                isBest={key === 0}
+                                                cardUser={card.user_name}
+                                                hasQRPayment={
+                                                    card.has_qr_payment
+                                                }
+                                                hasCardPayment={
+                                                    card.has_card_payment
+                                                }
+                                                cardType={card.bank_card_type}
+                                                cardName={card.bank}
+                                                cashbackPercentage={
+                                                    card.percent
+                                                }
+                                                cardNumber="****************"
+                                            />
+                                        )
+                                    )
+                                ) : (
+                                    <p>Кэшбэки не найдены.</p>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+                {cashbackMutation?.data?.other_cashbacks && (
+                    <div className="mx-auto min-w-auto lg:max-w-5xl sm:min-w-[600px] px-4 sm:px-6 lg:px-8">
+                        <div className="mx-auto min-w-[320px] max-w-2xl lg:mx-0 lg:max-w-none border border-gray-200 rounded-md">
+                            <div className="flex items-center justify-between ">
+                                <div className="w-full border-b border-gray-200 bg-gray-50 p-3">
+                                    <h2 className="text-base font-semibold leading-7 text-gray-900">
+                                        All cards
+                                    </h2>
+                                </div>
+                            </div>
+                            <ul
+                                role="list"
+                                className=" grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8 p-5"
+                            >
+                                {cashbackMutation?.data?.other_cashbacks
+                                    ?.length > 0 ? (
+                                    cashbackMutation.data.other_cashbacks.map(
+                                        (card: any, key: number) => (
+                                            <CreditCardSmall
+                                                key={key}
+                                                isBest={key === 0}
+                                                cardUser={card.user_name}
+                                                hasQRPayment={
+                                                    card.has_qr_payment
+                                                }
+                                                hasCardPayment={
+                                                    card.has_card_payment
+                                                }
+                                                cardType={card.bank_card_type}
+                                                cardName={card.bank}
+                                                cashbackPercentage={
+                                                    card.percent
+                                                }
+                                                cardNumber="****************"
+                                            />
+                                        )
+                                    )
+                                ) : (
+                                    <p>Кэшбэки не найдены</p>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

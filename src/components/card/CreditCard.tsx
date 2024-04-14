@@ -35,7 +35,7 @@ export const CreditCard = ({
     });
     return (
         <div className="flex w-max h-max">
-            <div className="mx-auto my-2 bg-gray-300 shadow-lg rounded-lg p-6 relative">
+            <div className="mx-auto my-2 bg-gray-300 shadow-xl rounded-lg p-6 relative">
                 <span
                     onClick={() => {
                         mutation.mutate(cardId);
@@ -59,7 +59,7 @@ export const CreditCard = ({
                     <div className="bg-yellow-300 rounded-sm p-1">
                         <div className="bg-white w-8 h-5 rounded-sm"></div>
                     </div>
-                    <h2 className="px-2 font-semibold text-gray-700">
+                    <h2 className="px-2 truncate font-semibold text-gray-700">
                         {cardTitle}
                     </h2>
                 </div>
