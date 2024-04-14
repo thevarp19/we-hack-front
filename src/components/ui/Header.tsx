@@ -135,12 +135,24 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                 ))}
                             </div>
                             <div className="py-6">
-                                <Link
-                                    href={getHref("/auth/login")}
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
-                                >
-                                    Log in
-                                </Link>
+                                {isAuth ? (
+                                    <Link
+                                        onClick={logout}
+                                        href={getHref("#")}
+                                        className="text-sm font-semibold leading-6 text-white"
+                                    >
+                                        Log out{" "}
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        href={getHref("/auth/login")}
+                                        className="text-sm font-semibold leading-6 text-white"
+                                    >
+                                        Log in{" "}
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
