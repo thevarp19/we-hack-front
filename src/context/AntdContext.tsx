@@ -5,7 +5,7 @@ import { FC, PropsWithChildren } from "react";
 
 export const AntdProvider: FC<PropsWithChildren> = ({ children }) => (
     <AntdRegistry>
-        <ConfigProvider theme={{ token: { colorPrimary: "#00805f" } }}>
+        <ConfigProvider theme={{ token: {} }}>
             <App>{children}</App>
         </ConfigProvider>
     </AntdRegistry>
