@@ -27,13 +27,13 @@ export default function ProfilePage() {
         <div className="w-full h-full flex justify-center items-center pt-5 gap-5">
             <div className="h-full border-2 border-primary bg-gray-100 p-5 rounded-lg ">
                 <h2 className="text-primary text-3xl pb-5 font-bold">
-                    My cards
+                    Мой карты
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:min-w-[1064px] md:min-h-[472px]">
                     {isPending && <Spin size="large" />}
                     {cards && cards.length === 0 && (
                         <div className="col-span-3 text-center text-lg text-gray-700">
-                            No cards found.
+                            Карты не найдены.
                         </div>
                     )}
                     {cards?.map((card: any, key: number) => (
@@ -58,7 +58,7 @@ export default function ProfilePage() {
                     className="-ml-0.5 mr-1.5 h-5 w-5"
                     aria-hidden="true"
                 />
-                New card
+                Новая карта
             </Link>
         </div>
     );

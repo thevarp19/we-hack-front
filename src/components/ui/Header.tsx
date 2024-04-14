@@ -12,8 +12,8 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
     const { getHref } = useLanguage();
 
     const navigation = [
-        { name: "Home", href: getHref("/home") },
-        { name: "Profile", href: getHref("/home/profile") },
+        { name: "Главная", href: getHref("/home") },
+        { name: "Профиль", href: getHref("/home/profile") },
     ];
     const router = useRouter();
     const { isAuth, logout } = useAuthContext();
@@ -83,14 +83,14 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                             href={getHref("#")}
                             className="text-sm font-semibold leading-6 text-white"
                         >
-                            Log out <span aria-hidden="true">&rarr;</span>
+                            Выйти <span aria-hidden="true">&rarr;</span>
                         </Link>
                     ) : (
                         <Link
                             href={getHref("/auth/login")}
                             className="text-sm font-semibold leading-6 text-white"
                         >
-                            Log in <span aria-hidden="true">&rarr;</span>
+                            Войти <span aria-hidden="true">&rarr;</span>
                         </Link>
                     )}
                 </div>
@@ -141,7 +141,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                         href={getHref("#")}
                                         className="text-sm font-semibold leading-6 text-white"
                                     >
-                                        Log out{" "}
+                                        Выйти{" "}
                                         <span aria-hidden="true">&rarr;</span>
                                     </Link>
                                 ) : (
@@ -149,7 +149,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                         href={getHref("/auth/login")}
                                         className="text-sm font-semibold leading-6 text-white"
                                     >
-                                        Log in{" "}
+                                        Войти{" "}
                                         <span aria-hidden="true">&rarr;</span>
                                     </Link>
                                 )}
