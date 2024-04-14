@@ -50,20 +50,20 @@ export const CreditCardSmall: React.FC<CardProps> = ({
             <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
                 <div className="flex justify-between gap-x-4 py-3">
                     <dt className="text-gray-500 whitespace-nowrap">
-                        Bank card
+                        Банковская карта
                     </dt>
                     <dd className="text-gray-700 truncate">{cardType}</dd>
                 </div>
                 {cardUser && (
                     <div className="flex justify-between gap-x-4 py-3">
-                        <dt className="text-gray-500">Name on Card</dt>
+                        <dt className="text-gray-500">Имя Фамилия</dt>
                         <dd className="text-gray-700">
                             <time dateTime={cardType}>{cardUser}</time>
                         </dd>
                     </div>
                 )}
                 <div className="flex justify-between gap-x-4 py-3">
-                    <dt className="text-gray-500">Cashback</dt>
+                    <dt className="text-gray-500">Кэшбэк</dt>
                     <dd className="flex items-start gap-x-2">
                         <div className="font-medium text-gray-900">
                             {cashbackPercentage} %
@@ -71,18 +71,18 @@ export const CreditCardSmall: React.FC<CardProps> = ({
                     </dd>
                 </div>
                 <div className="flex justify-between gap-x-4 py-3">
-                    <dt className="text-gray-500">QR payment</dt>
+                    <dt className="text-gray-500">QR оплата</dt>
                     <dd className="flex items-start gap-x-2">
                         <div className="font-medium text-gray-900">
-                            {hasQRPayment ? "Yes" : "No"}
+                            {hasQRPayment ? "Да" : "Нет"}
                         </div>
                     </dd>
                 </div>
                 <div className="flex justify-between gap-x-4 py-3">
-                    <dt className="text-gray-500">Card payment</dt>
+                    <dt className="text-gray-500">Оплата картой</dt>
                     <dd className="flex items-start gap-x-2">
                         <div className="font-medium text-gray-900">
-                            {hasCardPayment ? "Yes" : "No"}
+                            {hasCardPayment ? "Да" : "Неи"}
                         </div>
                     </dd>
                 </div>

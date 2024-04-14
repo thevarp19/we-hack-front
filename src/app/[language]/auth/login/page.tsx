@@ -12,7 +12,7 @@ export default function LoginPage() {
             <Logo />
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Sign in to your account
+                    Войти в аккаунт
                 </h2>
             </div>
 
@@ -23,7 +23,7 @@ export default function LoginPage() {
                             htmlFor="email"
                             className="block text-sm font-medium leading-6 text-gray-900"
                         >
-                            Email address
+                            Почта
                         </label>
                         <div className="mt-2">
                             <input
@@ -45,14 +45,14 @@ export default function LoginPage() {
                                 htmlFor="password"
                                 className="block text-sm font-medium leading-6 text-gray-900"
                             >
-                                Password
+                                Пароль
                             </label>
                             <div className="text-sm">
                                 <a
                                     href="#"
                                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                                 >
-                                    Forgot password?
+                                    Забыли пароль?
                                 </a>
                             </div>
                         </div>
@@ -76,18 +76,18 @@ export default function LoginPage() {
                             disabled={mutation.isPending}
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                            Sign in
+                            Войти
                         </button>
                     </div>
                 </form>
                 {/* <Link className="!p-0 !text-primary w-full"></Link> */}
                 <p className="mt-10 text-center text-sm text-gray-500">
-                    Don&apos;t have an account?{" "}
+                    У меня нет аккаунта{" "}
                     <Link
                         href={getHref("/auth/register")}
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
-                        Register here
+                        Регистрация
                     </Link>
                 </p>
             </div>

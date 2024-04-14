@@ -12,8 +12,8 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
     const { getHref } = useLanguage();
 
     const navigation = [
-        { name: "Home", href: getHref("/home") },
-        { name: "Profile", href: getHref("/home/profile") },
+        { name: "Главная", href: getHref("/home") },
+        { name: "Профиль", href: getHref("/home/profile") },
     ];
     const router = useRouter();
     const { isAuth, logout } = useAuthContext();
@@ -83,14 +83,14 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                             href={getHref("#")}
                             className="text-sm font-semibold leading-6 text-white"
                         >
-                            Log out <span aria-hidden="true">&rarr;</span>
+                            Выйти <span aria-hidden="true">&rarr;</span>
                         </Link>
                     ) : (
                         <Link
                             href={getHref("/auth/login")}
                             className="text-sm font-semibold leading-6 text-white"
                         >
-                            Log in <span aria-hidden="true">&rarr;</span>
+                            Войти <span aria-hidden="true">&rarr;</span>
                         </Link>
                     )}
                 </div>
@@ -139,7 +139,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                     href={getHref("/auth/login")}
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                                 >
-                                    Log in
+                                    Войти
                                 </Link>
                             </div>
                         </div>

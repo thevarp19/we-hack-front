@@ -92,7 +92,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center w-full px-4 py-5 sm:p-6 gap-5">
                 <div>
                     <h3 className="text-base font-semibold leading-6 text-gray-900">
-                        Select your product category
+                        Выберите категорию вашего продукта
                     </h3>
 
                     <form
@@ -104,7 +104,7 @@ export default function HomePage() {
                                 mode="multiple"
                                 allowClear
                                 style={{ width: "100%" }}
-                                placeholder="Select categories"
+                                placeholder="Выберите категорию"
                                 value={selectedCategories}
                                 onChange={handleChange}
                             >
@@ -136,7 +136,7 @@ export default function HomePage() {
                                                 className="mr-2 h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500"
                                                 aria-hidden="true"
                                             />
-                                            3 Filters
+                                            Фильтры
                                         </Disclosure.Button>
                                     </div>
                                 </div>
@@ -158,10 +158,10 @@ export default function HomePage() {
                                                     }
                                                 >
                                                     <Option value="true">
-                                                        Yes
+                                                        Да
                                                     </Option>
                                                     <Option value="false">
-                                                        No
+                                                        Нет
                                                     </Option>
                                                 </Select>
                                                 <div className="grid grid-cols-2 grid-template-areas gap-x-14 w-full"></div>
@@ -238,7 +238,7 @@ export default function HomePage() {
                             type="submit"
                             className="mt-3 inline-flex min-w-80 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  sm:w-auto"
                         >
-                            Analyze
+                            Анализировать
                         </button>
                     </form>
                 </div>
@@ -249,7 +249,7 @@ export default function HomePage() {
                             <div className="flex items-center justify-between ">
                                 <div className="w-full border-b border-gray-200 bg-gray-50 p-3">
                                     <h2 className="text-base font-semibold leading-7 text-gray-900">
-                                        Your cards
+                                        Ваши карты
                                     </h2>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@ export default function HomePage() {
                             <div className="flex items-center justify-between ">
                                 <div className="w-full border-b border-gray-200 bg-gray-50 p-3">
                                     <h2 className="text-base font-semibold leading-7 text-gray-900">
-                                        All cards
+                                        Все карты
                                     </h2>
                                 </div>
                             </div>

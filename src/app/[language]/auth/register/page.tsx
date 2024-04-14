@@ -27,7 +27,7 @@ export default function RegisterPage() {
                 className="mx-auto mt-8 max-w-xl sm:mt-10"
             >
                 <h2 className="text-2xl flex gap-4 text-primary uppercase font-medium pb-6">
-                    Personal info
+                    Персональная информация
                 </h2>
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div>
@@ -35,7 +35,7 @@ export default function RegisterPage() {
                             htmlFor="first-name"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            First name
+                            Имя
                         </label>
                         <div className="mt-2.5">
                             <input
@@ -54,7 +54,7 @@ export default function RegisterPage() {
                             htmlFor="last_name"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            Last name
+                            Фамилия
                         </label>
                         <div className="mt-2.5">
                             <input
@@ -73,7 +73,7 @@ export default function RegisterPage() {
                             htmlFor="email"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            Email
+                            Почта
                         </label>
                         <div className="mt-2.5">
                             <input
@@ -92,7 +92,7 @@ export default function RegisterPage() {
                             htmlFor="company"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            Password
+                            Пароль
                         </label>
                         <div className="mt-2.5">
                             <input
@@ -112,7 +112,7 @@ export default function RegisterPage() {
                             htmlFor="phone_number"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            Phone number
+                            Номер телефона
                         </label>
                         <div className="relative mt-2.5">
                             <input
@@ -131,7 +131,7 @@ export default function RegisterPage() {
                             htmlFor="address"
                             className="block text-sm font-semibold leading-6 text-gray-900"
                         >
-                            Address
+                            Адрес
                         </label>
                         <div className="mt-2.5">
                             <input
@@ -160,7 +160,7 @@ export default function RegisterPage() {
                                 )}
                             >
                                 <span className="sr-only">
-                                    Agree to policies
+                                    Согласие на обработку данных
                                 </span>
                                 <span
                                     aria-hidden="true"
@@ -174,12 +174,12 @@ export default function RegisterPage() {
                             </Switch>
                         </div>
                         <Switch.Label className="text-sm leading-6 text-gray-600">
-                            By selecting this, you agree to our{" "}
+                            Выбирая это, вы соглашаетесь с нашими{" "}
                             <a
                                 href="#"
                                 className="font-semibold text-indigo-600"
                             >
-                                privacy&nbsp;policy
+                                Политика&nbsp;конфиденциальности
                             </a>
                             .
                         </Switch.Label>
@@ -188,7 +188,7 @@ export default function RegisterPage() {
                         href={getHref("/auth/login")}
                         className="!p-0 !text-primary w-full text-sm leading-6"
                     >
-                        Already have an account? Log in here
+                        У вас уже есть аккаунт? Войдите здесь
                     </Link>
                 </div>
 
@@ -200,7 +200,7 @@ export default function RegisterPage() {
                         }
                         type="submit"
                     >
-                        Register
+                        Регистрация
                     </button>
                 </div>
             </form>
