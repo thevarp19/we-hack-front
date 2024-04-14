@@ -1,18 +1,28 @@
 "use client";
+import { Loading } from "@/components/shared/Loading";
 import {
     FontColorsOutlined,
     GlobalOutlined,
     TransactionOutlined,
 } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
-import { useBankCards, useCreateCardMutation } from "../queries";
+import {
+    useBankCards,
+    useCardQuery,
+    useUpdateCardMutation,
+} from "../../queries";
 
-export default function Page() {
-    const { mutateAsync, isPending } = useCreateCardMutation();
+export default function Page({ params }: any) {
+    const id = params?.id;
+    const { data: card, isPending: isCardPending } = useCardQuery(id);
+    const { mutateAsync, isPending } = useUpdateCardMutation(id);
     const { data: banks, isPending: isBankPending } = useBankCards();
+
+    if (isCardPending) return <Loading />;
     return (
         <div className="flex justify-center">
             <Form
+                initialValues={card}
                 className="max-w-sm w-full"
                 onFinish={async (values) => {
                     mutateAsync(values);
@@ -68,7 +78,7 @@ export default function Page() {
                         htmlType="submit"
                         loading={isPending}
                     >
-                        {"Создать"}
+                        {"Сохранить"}
                     </Button>
                 </Form.Item>
             </Form>

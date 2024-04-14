@@ -1,6 +1,7 @@
 import { axiosAuthorized } from "@/lib/axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
+import { useRouter } from "next/navigation";
 
 export interface CardResponse {
     id: number;
@@ -17,6 +18,27 @@ export const useCardsQuery = () => {
         queryKey: ["cards"],
         queryFn: async () => {
             const { data } = await getCards();
+            return data;
+        },
+    });
+};
+
+export interface CardResponse {
+    id: number;
+    bank: number;
+    name: string;
+    url: string;
+}
+
+const getCard = (id: number) => {
+    return axiosAuthorized.get<CardResponse>(`/api/bank-card-type/${id}/`);
+};
+
+export const useCardQuery = (id: number) => {
+    return useQuery({
+        queryKey: ["card", id],
+        queryFn: async () => {
+            const { data } = await getCard(id);
             return data;
         },
     });
@@ -56,6 +78,7 @@ const createCard = (data: CreateCardRequest) => {
 export const useCreateCardMutation = () => {
     const { message } = App.useApp();
     const queryClient = useQueryClient();
+    const navigate = useRouter();
     return useMutation<void, void, CreateCardRequest>({
         mutationFn: async (values) => {
             await createCard(values);
@@ -63,6 +86,37 @@ export const useCreateCardMutation = () => {
         onSuccess() {
             queryClient.invalidateQueries({ queryKey: ["cards"] });
             message.success("Success!");
+            navigate.push("/admin");
+        },
+        onError() {
+            message.error("Error!");
+        },
+    });
+};
+
+export interface UpdateCardRequest {
+    id: number;
+    name: string;
+    url: string;
+    bank: number;
+}
+
+const updateCard = (data: UpdateCardRequest, id: number) => {
+    return axiosAuthorized.put(`/api/bank-card-type/${id}/`, data);
+};
+
+export const useUpdateCardMutation = (id: number) => {
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    const navigate = useRouter();
+    return useMutation<void, void, UpdateCardRequest>({
+        mutationFn: async (values) => {
+            await updateCard(values, id);
+        },
+        onSuccess() {
+            queryClient.invalidateQueries({ queryKey: ["cards"] });
+            message.success("Success!");
+            navigate.push("/admin");
         },
         onError() {
             message.error("Error!");

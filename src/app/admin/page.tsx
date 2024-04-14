@@ -1,5 +1,6 @@
 "use client";
 
+import { EditOutlined } from "@ant-design/icons";
 import { Button, Table, TableColumnsType } from "antd";
 import Link from "next/link";
 import { DeleteButton } from "./DeleteButton";
@@ -30,8 +31,19 @@ const columns: TableColumnsType<CardResponse> = [
         },
     },
     {
+        title: "Edit",
+
+        render: (_, record) => {
+            return (
+                <Link href={`/admin/create-card/${record.id}`}>
+                    <Button icon={<EditOutlined />}>Edit</Button>
+                </Link>
+            );
+        },
+    },
+    {
         title: "Delete",
-        dataIndex: "url",
+
         render: (_, record) => {
             return <DeleteCard id={record.id} />;
         },
