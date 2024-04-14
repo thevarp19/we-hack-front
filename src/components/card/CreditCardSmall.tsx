@@ -31,7 +31,7 @@ export const CreditCardSmall: React.FC<CardProps> = ({
         <li
             className={`overflow-hidden rounded-xl border ${
                 isBest
-                    ? "border-2 border-indigo-900 shadow-2xl"
+                    ? "border-2 border-indigo-900 shadow-2xl bg-gray-800/80 ring-1 ring-white/10 lg:bg-transparent lg:pb-14 lg:ring-0 relative rounded-2xl scale-[115%]"
                     : "border-gray-200"
             } max-w-[350px] min-w-[230px]`}
         >
