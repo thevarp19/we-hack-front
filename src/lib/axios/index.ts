@@ -4,7 +4,8 @@ import {
     configureRefreshRetry,
     createAxiosWithBaseUrl,
 } from "./helper";
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+const baseURL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "https://opti-cash-api.vercel.app/";
 
 const axios = createAxiosWithBaseUrl(baseURL);
 const axiosAuthorized = createAxiosWithBaseUrl(baseURL);
