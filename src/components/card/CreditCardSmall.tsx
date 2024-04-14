@@ -12,6 +12,25 @@ interface CardProps {
     isBest: boolean;
 }
 
+function getImageOfCard(name: string): string {
+    if (name === "ForteBank") {
+        return "/images/fortebank_logo.jpeg";
+    }
+    if (name === "Kaspi") {
+        return "/images/kaspi-logo.png";
+    }
+    if (name === "Jusan") {
+        return "/images/jusan-logo.png";
+    }
+    if (name === "Halyk") {
+        return "/images/halyk-logo.png";
+    }
+    if (name === "Freedom") {
+        return "/images/freedom-logo.png";
+    }
+    return "https://d2vm05b1botqyl.cloudfront.net/images/p13_v3_wgc_nt/quiz/anxious/1.webp";
+}
+
 export const CreditCardSmall: React.FC<CardProps> = ({
     cardName,
     cardType,
@@ -37,9 +56,7 @@ export const CreditCardSmall: React.FC<CardProps> = ({
         >
             <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
                 <img
-                    src={
-                        "https://d2vm05b1botqyl.cloudfront.net/images/p13_v3_wgc_nt/quiz/anxious/1.webp"
-                    }
+                    src={getImageOfCard(cardName)}
                     alt={cardName}
                     className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
                 />

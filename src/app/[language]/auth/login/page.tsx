@@ -1,5 +1,4 @@
 "use client";
-import { Logo } from "@/components/shared/Logo";
 import { useLanguage } from "@/context/LanguageContext";
 import { useLogin } from "@/hooks/auth/useLogin";
 import Link from "next/link";
@@ -9,7 +8,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 items-center">
-            <Logo />
+            {/* <Logo /> */}
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Sign in to your account
@@ -88,6 +87,24 @@ export default function LoginPage() {
                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                     >
                         Register here
+                    </Link>
+                </p>
+                <p className="mt-10 text-center text-sm text-gray-500">
+                    <Link
+                        href={"#"}
+                        onClick={() => {
+                            formik
+                                .setValues({
+                                    username: "erlandzhumabaev@gmail.com",
+                                    password: "12345678",
+                                })
+                                .then(() => {
+                                    formik.submitForm();
+                                });
+                        }}
+                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                    >
+                        Sign in as a guest
                     </Link>
                 </p>
             </div>
