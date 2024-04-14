@@ -376,15 +376,15 @@ export default function Page() {
                     </div>
                     <div className="relative overflow-hidden pt-16">
                         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                            <img
-                                src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+                            <Image
+                                src="/images/screen.png"
                                 alt="App screenshot"
                                 className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-white/10"
                                 width={2432}
                                 height={1442}
                             />
                             <div className="relative" aria-hidden="true">
-                                <div className="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-gray-900 pt-[7%]" />
+                                <div className="absolute -inset-x-20 bottom-0 bg-gradient-to-t from-gray-900 " />
                             </div>
                         </div>
                     </div>
