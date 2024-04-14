@@ -5,6 +5,7 @@ import {
     PresentationChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 
 const primaryFeatures = [
     {
@@ -216,18 +217,24 @@ export default function Page() {
                                 экономии в магазинах и ресторанах.
                             </p>
                             <div className="mt-10 flex items-center gap-x-6">
-                                <a
-                                    href="#"
+                                <Link
+                                    href="/en/home"
                                     className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                                 >
                                     Приступить
-                                </a>
-                                <a
-                                    href="#"
-                                    className="text-sm font-semibold leading-6 text-white"
+                                </Link>
+                                <Link
+                                    href="/admin"
+                                    className="text-sm font-semibold leading-6 text-white flex items-center gap-1"
                                 >
-                                    Live demo <span aria-hidden="true">→</span>
-                                </a>
+                                    Админ панель
+                                    <span
+                                        aria-hidden="true"
+                                        className="mt-[2px]"
+                                    >
+                                        →
+                                    </span>
+                                </Link>
                             </div>
                         </div>
                         <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">

@@ -1,6 +1,7 @@
 import { axiosAuthorized } from "@/lib/axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export interface CardResponse {
@@ -117,6 +118,23 @@ export const useUpdateCardMutation = (id: number) => {
             queryClient.invalidateQueries({ queryKey: ["cards"] });
             message.success("Success!");
             navigate.push("/admin");
+        },
+        onError() {
+            message.error("Error!");
+        },
+    });
+};
+
+export const useStartScraping = () => {
+    const { message } = App.useApp();
+    return useMutation({
+        mutationFn: async () => {
+            await axios.post(
+                `https://cashback-scheduler-of5r5e4d7a-lm.a.run.app/trigger`
+            );
+        },
+        onSuccess() {
+            message.success("Successfully started!");
         },
         onError() {
             message.error("Error!");

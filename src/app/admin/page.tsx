@@ -1,10 +1,15 @@
 "use client";
 
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Table, TableColumnsType } from "antd";
+import { Button, Popconfirm, Table, TableColumnsType } from "antd";
 import Link from "next/link";
 import { DeleteButton } from "./DeleteButton";
-import { CardResponse, useCardsQuery, useDeleteCardMutation } from "./queries";
+import {
+    CardResponse,
+    useCardsQuery,
+    useDeleteCardMutation,
+    useStartScraping,
+} from "./queries";
 
 const columns: TableColumnsType<CardResponse> = [
     {
@@ -63,13 +68,25 @@ function DeleteCard({ id }: { id: number }) {
 
 export default function Page() {
     const { data, isPending } = useCardsQuery();
+    const { mutateAsync } = useStartScraping();
     return (
         <div>
-            <Link href="/admin/create-card">
+            <Link href="/admin/create-card" className="mr-4">
                 <Button type="primary" className="mb-4">
-                    Add a new card
+                    Добавить карту
                 </Button>
             </Link>
+            <Popconfirm
+                title="Обновить данные"
+                description="Вы уверены, что хотите обновить данные?"
+                onConfirm={async () => {
+                    await mutateAsync();
+                }}
+            >
+                <Button type="default" className="mb-4">
+                    Обновить данные
+                </Button>
+            </Popconfirm>
             <Table
                 columns={columns}
                 dataSource={data}
