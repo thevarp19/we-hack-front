@@ -8,6 +8,7 @@ import { Avatar } from "antd";
 import { Footer, Header } from "antd/es/layout/layout";
 import clsx from "clsx";
 import type { Metadata } from "next";
+import Link from "next/link";
 export const metadata: Metadata = {
     title: "Queue app",
     description: "Web app",
@@ -25,10 +26,12 @@ export default function RootLayout({
                     <AntdProvider>
                         <SocketProvider>
                             <Header className="flex justify-between items-center p-0 ">
-                                <Avatar
-                                    size="large"
-                                    icon={<UserOutlined color="black" />}
-                                />
+                                <Link href="/">
+                                    <Avatar
+                                        size="large"
+                                        icon={<UserOutlined color="black" />}
+                                    />
+                                </Link>
                                 {/* <h2 className="text-white">John Smit</h2> */}
                                 <BellOutlined
                                     color="white"

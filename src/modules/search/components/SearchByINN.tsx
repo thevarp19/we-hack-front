@@ -1,4 +1,5 @@
 "use client";
+import { useSocketContext } from "@/context/SocketContext";
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 
@@ -16,9 +17,11 @@ export const SearchByINN: FC<SearchByINNProps> = ({
     loading,
 }) => {
     const [form] = Form.useForm();
+    const { setUserINN } = useSocketContext();
     const onFinish = async (values: any) => {
         setLoading(true);
         try {
+            setUserINN(values.inn);
             const response = await axios.get(
                 `https://queue-service-bvrrx45lva-uc.a.run.app/api/clients/${values.inn}/`
             );

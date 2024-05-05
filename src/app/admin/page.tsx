@@ -2,6 +2,7 @@
 import { Select, Table, TableColumnsType } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 interface Client {
     id: number;
@@ -9,6 +10,7 @@ interface Client {
     iin: string;
     status: "waiting" | "processing" | "finished";
 }
+const socket = io("https://wehack-ws-of5r5e4d7a-lm.a.run.app");
 
 const statuses: Client["status"][] = ["waiting", "processing", "finished"];
 
@@ -39,7 +41,9 @@ export default function ClientsTable() {
                 <Select
                     defaultValue={record.status}
                     style={{ width: 120 }}
-                    onChange={(value) => handleStatusChange(record.id, value)}
+                    onChange={(value) =>
+                        handleStatusChange(record.id, record.iin, value)
+                    }
                 >
                     {statuses.map((status) => (
                         <Select.Option key={status} value={status}>
@@ -63,6 +67,7 @@ export default function ClientsTable() {
 
     const handleStatusChange = async (
         clientId: number,
+        iin: string,
         newStatus: Client["status"]
     ) => {
         await axios.put(
@@ -72,6 +77,7 @@ export default function ClientsTable() {
             }
         );
         // Optionally refresh the client list or locally update the status
+        socket.emit("send_notification", iin);
         setClients(
             clients.map((client) =>
                 client.id === clientId
