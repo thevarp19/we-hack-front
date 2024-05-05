@@ -1,5 +1,6 @@
 "use client";
 import { Button, Form, Input } from "antd";
+import axios from "axios";
 
 import { FC } from "react";
 
@@ -15,17 +16,20 @@ export const SearchByINN: FC<SearchByINNProps> = ({
     loading,
 }) => {
     const [form] = Form.useForm();
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         setLoading(true);
         try {
-            setBookings([]);
+            const response = await axios.get(
+                `https://queue-service-bvrrx45lva-uc.a.run.app/api/clients/${values.inn}/`
+            );
+            setBookings(response.data);
         } catch (error) {
+            console.error("Failed to fetch bookings:", error);
         } finally {
-            setTimeout(() => {
-                setLoading(false);
-            }, 1000);
+            setLoading(false);
         }
     };
+
     return (
         <div className="max-w-sm w-full">
             <h2 className="text-2xl mb-4 text-center">Напишите свой ИНН</h2>
