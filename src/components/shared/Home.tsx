@@ -183,12 +183,14 @@ export const Home: React.FC = () => {
                         />
                     </Link>
                 </div>
-                <Image
-                    src="/icons/queue.png"
-                    width={30}
-                    height={30}
-                    alt="aaa"
-                />
+                <Link href="/queue">
+                    <Image
+                        src="/icons/queue.png"
+                        width={30}
+                        height={30}
+                        alt="aaa"
+                    />{" "}
+                </Link>
             </div>
         </Layout>
     );
