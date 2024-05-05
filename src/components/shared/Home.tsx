@@ -126,7 +126,7 @@ export const Home: React.FC = () => {
                                                     )}
                                                 </div>
                                                 {booking.consultant_info
-                                                    .type === "date" && (
+                                                    .type === "live" && (
                                                     <div className="flex items-center gap-4 text-xl pb-2">
                                                         <UsergroupAddOutlined />{" "}
                                                         Перед вами{" "}
