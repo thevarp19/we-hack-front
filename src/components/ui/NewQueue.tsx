@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { App, Card } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +22,8 @@ export const NewQueue: FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const [stage, setStage] = useState<string>("select"); // 'select', 'options'
-
+    const [bookingTimes, setBookingTimes] = useState([]);
+    const { message } = App.useApp();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -56,7 +57,12 @@ export const NewQueue: FC = () => {
                 `https://queue-service-bvrrx45lva-uc.a.run.app/api/establishment/${selectedFilial.id}/consultants/?type=${type}`
             );
             setConsultants(response.data);
-            setStage("consultants");
+            if (type === "live") {
+                setStage("live");
+            }
+            if (type === "date") {
+                setStage("bookingTime");
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 setError("Failed to fetch consultants.");
@@ -68,7 +74,34 @@ export const NewQueue: FC = () => {
         }
         setLoading(false);
     };
+    const handleBookingTimeSlot = async (type: string) => {
+        if (!selectedFilial) return;
 
+        setLoading(true);
+        try {
+            const response = await axios.get(
+                `https://queue-service-bvrrx45lva-uc.a.run.app/api/establishment/${selectedFilial.id}/consultants/?type=${type}`
+            );
+            setConsultants(response.data);
+            if (type === "live") {
+                setStage("live");
+            }
+            if (type === "date") {
+                setStage("bookingTime");
+            }
+            message.success("Time booked successfully");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                setError("Failed to fetch consultants.");
+            } else {
+                setError(
+                    "An unexpected error occurred while fetching consultants."
+                );
+            }
+            message.error("Failed to book time");
+        }
+        setLoading(false);
+    };
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
@@ -127,6 +160,37 @@ export const NewQueue: FC = () => {
             {stage === "consultants" && (
                 <div>
                     {/* Display consultants or next steps here based on fetched data */}
+                </div>
+            )}
+            {stage === "bookingTime" && (
+                <div>
+                    <h2 className="text-2xl mb-4 text-center">
+                        Выберите время
+                        <div className="flex flex-wrap">
+                            {bookingTimes.map((time) => (
+                                <div className="p-2">
+                                    <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
+                                        10:00
+                                    </button>
+                                </div>
+                            ))}
+                            <div className="p-2">
+                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
+                                    10:00
+                                </button>
+                            </div>
+                            <div className="p-2">
+                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
+                                    11:00
+                                </button>
+                            </div>
+                            <div className="p-2">
+                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
+                                    12:00
+                                </button>
+                            </div>
+                        </div>
+                    </h2>
                 </div>
             )}
         </div>
