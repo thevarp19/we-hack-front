@@ -70,6 +70,9 @@ export default function ClientsTable() {
         iin: string,
         newStatus: Client["status"]
     ) => {
+        socket.emit("send_notification", iin);
+        console.log(iin);
+
         await axios.put(
             `https://queue-service-bvrrx45lva-uc.a.run.app/api/consultants/admin/clients/${clientId}`,
             {
@@ -77,7 +80,7 @@ export default function ClientsTable() {
             }
         );
         // Optionally refresh the client list or locally update the status
-        socket.emit("send_notification", iin);
+
         setClients(
             clients.map((client) =>
                 client.id === clientId
