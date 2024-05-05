@@ -8,10 +8,10 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import { Card, Layout, Spin, Typography } from "antd";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
 
@@ -89,6 +89,7 @@ export const Home: React.FC = () => {
                                                     <br />
                                                     17 марта
                                                 </div>
+                                                <OpenGraphPreview url="https://2gis.kz/almaty/geo/9430073144770622" />
                                             </Card>
                                         </li>
                                     ))}
@@ -120,3 +121,57 @@ export const Home: React.FC = () => {
         </Layout>
     );
 };
+
+export const OpenGraphPreview = ({ url }: { url: string }) => {
+    const [ogData, setOgData] = useState({
+        title: "",
+        description: "",
+        image: "",
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const proxyUrl =
+                    "https://cors-proxy-gamma.vercel.app/proxy?url=";
+                const response = await axios.get(`${proxyUrl}${url}`);
+
+                const parser = new DOMParser();
+                const htmlDocument = parser.parseFromString(
+                    response.data,
+                    "text/html"
+                );
+                const metaTags = htmlDocument.getElementsByTagName("meta");
+
+                let ogMeta = { title: "", description: "", image: "" };
+                // @ts-ignore
+                for (let tag of metaTags) {
+                    if (tag.getAttribute("property") === "og:title") {
+                        ogMeta.title = tag.getAttribute("content");
+                    } else if (
+                        tag.getAttribute("property") === "og:description"
+                    ) {
+                        ogMeta.description = tag.getAttribute("content");
+                    } else if (tag.getAttribute("property") === "og:image") {
+                        ogMeta.image = tag.getAttribute("content");
+                    }
+                }
+                setOgData(ogMeta);
+            } catch (error) {
+                console.error("Error fetching OpenGraph data:", error);
+            }
+        };
+
+        fetchData();
+    }, [url]);
+
+    return (
+        <div>
+            <h1 className="mb-2">{ogData.title}</h1>
+            {/* <p>{ogData.description}</p> */}
+            {ogData.image && <img src={ogData.image} alt="Open Graph Image" />}
+        </div>
+    );
+};
+
+export default OpenGraphPreview;
