@@ -127,15 +127,16 @@ export const Home: React.FC = () => {
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xl">
                                                     <ClockCircleOutlined />
-                                                    Время консультации{" "}
-                                                    {
-                                                        booking?.booking_info
-                                                            ?.time_slot
-                                                    }{" "}
-                                                    <br />{" "}
+                                                    Время консультации <br />{" "}
+                                                    {booking?.booking_info ===
+                                                        null && "Живой"}
                                                     {
                                                         booking?.booking_info
                                                             ?.date
+                                                    }{" "}
+                                                    {
+                                                        booking?.booking_info
+                                                            ?.time_slot
                                                     }
                                                 </div>
 

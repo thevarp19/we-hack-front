@@ -1,30 +1,41 @@
 "use client";
-import { Select, Table } from "antd";
+import { Select, Table, TableColumnsType } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const statuses = ["waiting", "progressing", "finished"];
+interface Client {
+    id: number;
+    email: string;
+    iin: string;
+    status: "waiting" | "processing" | "finished";
+}
+
+const statuses: Client["status"][] = ["waiting", "processing", "finished"];
 
 export default function ClientsTable() {
-    const [clients, setClients] = useState([]);
+    const [clients, setClients] = useState<Client[]>([]);
 
-    const columns = [
+    const columns: TableColumnsType<Client> = [
         {
             title: "ID",
             dataIndex: "id",
+            key: "id",
         },
         {
             title: "Email",
             dataIndex: "email",
+            key: "email",
         },
         {
             title: "IIN",
             dataIndex: "iin",
+            key: "iin",
         },
         {
             title: "Status",
+            key: "status",
             dataIndex: "status",
-            render: (_: any, record: { status: any; id: any }) => (
+            render: (_, record) => (
                 <Select
                     defaultValue={record.status}
                     style={{ width: 120 }}
@@ -41,17 +52,25 @@ export default function ClientsTable() {
     ];
     useEffect(() => {
         const fetchClients = async () => {
-            const response = await axios.get("/api/consultants/admin/clients");
+            const response = await axios.get<Client[]>(
+                "https://queue-service-bvrrx45lva-uc.a.run.app/api/consultants/admin/clients"
+            );
             setClients(response.data);
         };
 
         fetchClients();
     }, []);
 
-    const handleStatusChange = async (clientId: number, newStatus: string) => {
-        await axios.put(`/api/consultants/admin/clients/${clientId}`, {
-            status: newStatus,
-        });
+    const handleStatusChange = async (
+        clientId: number,
+        newStatus: Client["status"]
+    ) => {
+        await axios.put(
+            `https://queue-service-bvrrx45lva-uc.a.run.app/api/consultants/admin/clients/${clientId}`,
+            {
+                status: newStatus,
+            }
+        );
         // Optionally refresh the client list or locally update the status
         setClients(
             clients.map((client) =>
