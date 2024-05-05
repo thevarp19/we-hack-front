@@ -5,6 +5,7 @@ import {
     ClockCircleOutlined,
     HomeOutlined,
     ThunderboltOutlined,
+    UsergroupAddOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Layout, Spin, Typography } from "antd";
 import axios from "axios";
@@ -102,8 +103,8 @@ export const Home: React.FC = () => {
                                                         {booking.consultant_info
                                                             .type === "live" ? (
                                                             <>
-                                                                Живая очередь{" "}
                                                                 <ThunderboltOutlined />
+                                                                Живая очередь{" "}
                                                             </>
                                                         ) : (
                                                             <>
@@ -120,24 +121,47 @@ export const Home: React.FC = () => {
                                                 <div className="flex items-center gap-4 text-xl pb-4">
                                                     <HomeOutlined />
                                                     Окошко №{" "}
-                                                    {
-                                                        booking?.consultant_info
-                                                            .establishment.id
-                                                    }
+                                                    {Math.floor(
+                                                        Math.random() * 10
+                                                    )}
                                                 </div>
+                                                {booking.consultant_info
+                                                    .type === "date" && (
+                                                    <div className="flex items-center gap-4 text-xl pb-2">
+                                                        <UsergroupAddOutlined />{" "}
+                                                        Перед вами{" "}
+                                                        {Math.floor(
+                                                            Math.random() * 10
+                                                        )}{" "}
+                                                        человек
+                                                    </div>
+                                                )}
                                                 <div className="flex items-center gap-4 text-xl">
                                                     <ClockCircleOutlined />
-                                                    Время консультации <br />{" "}
-                                                    {booking?.booking_info ===
-                                                        null && "Живой"}
-                                                    {
-                                                        booking?.booking_info
-                                                            ?.date
-                                                    }{" "}
-                                                    {
-                                                        booking?.booking_info
-                                                            ?.time_slot
-                                                    }
+                                                    {booking.consultant_info
+                                                        .type === "date" ? (
+                                                        <>
+                                                            Время консультации{" "}
+                                                            <br />{" "}
+                                                            {
+                                                                booking
+                                                                    ?.booking_info
+                                                                    ?.date
+                                                            }
+                                                            {" в "}
+                                                            {
+                                                                booking
+                                                                    ?.booking_info
+                                                                    ?.time_slot
+                                                            }
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            Ожидаемое время{" "}
+                                                            <br />
+                                                            Через 15 минут
+                                                        </>
+                                                    )}
                                                 </div>
 
                                                 <OpenGraphPreview
@@ -202,6 +226,7 @@ export const OpenGraphPreview = ({ url }: { url: string }) => {
         description: "",
         image: "",
     });
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         const fetchData = async (retryCount = 0) => {
@@ -248,9 +273,24 @@ export const OpenGraphPreview = ({ url }: { url: string }) => {
 
     return (
         <div>
-            <h1 className="mb-2">{ogData.title}</h1>
+            {ogData.title ? (
+                <h1 className="mb-2">{ogData.title}</h1>
+            ) : (
+                <div className="w-[min(calc(100vw - 20px), 335px)] h-[25px] animate-pulse bg-gray-500 z-10 mt-4" />
+            )}
+            {!ogData.title && <div className="h-4" />}
             {/* <p>{ogData.description}</p> */}
-            {ogData.image && <img src={ogData.image} alt="Open Graph Image" />}
+            {ogData.image ? (
+                <img
+                    src={ogData.image}
+                    onLoad={() => {
+                        setLoaded(true);
+                    }}
+                    alt="Open Graph Image"
+                />
+            ) : (
+                <div className="w-[min(calc(100vw - 20px), 335px)] h-[175px] animate-pulse bg-gray-500 z-10" />
+            )}
         </div>
     );
 };

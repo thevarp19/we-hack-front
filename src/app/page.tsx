@@ -387,7 +387,7 @@ export default function Page() {
                                 <Image
                                     src="/images/22.jpeg"
                                     alt="App screenshot"
-                                    className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-white/10 w-[50vw] h-auto object-contain"
+                                    className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-white/10 w-full h-[100vh] object-contain"
                                     width={0}
                                     height={0}
                                 />
