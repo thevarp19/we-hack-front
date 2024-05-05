@@ -5,7 +5,6 @@ import {
     ClockCircleOutlined,
     HomeOutlined,
     ThunderboltOutlined,
-    UserOutlined,
 } from "@ant-design/icons";
 import { Card, Layout, Spin, Typography } from "antd";
 import axios from "axios";
@@ -14,9 +13,35 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
+interface EstablishmentInfo {
+    id: number;
+    name: string;
+    address: string;
+    url: string;
+}
 
+interface ConsultantInfo {
+    name: string;
+    type: string; // Assuming 'type' could be more explicitly defined, possibly with a union type like 'live' | 'booked'
+    establishment: EstablishmentInfo;
+}
+
+interface BookingInfo {
+    date: string;
+    time_slot: string;
+    consultant: string;
+}
+
+interface ClientBooking {
+    id: number;
+    email: string;
+    iin: string;
+    status: string;
+    consultant_info: ConsultantInfo;
+    booking_info?: BookingInfo;
+}
 export const Home: React.FC = () => {
-    const [bookings, setBookings] = useState([{}, {}]);
+    const [bookings, setBookings] = useState<ClientBooking[]>();
     const [loading, setLoading] = useState(false);
     return (
         <Layout className="min-h-screen">
@@ -29,71 +54,98 @@ export const Home: React.FC = () => {
                     />
                     <Text className="text-3xl">Ваши записи</Text>
                     <div className="my-6">
-                        {/* Use any image or SVG here */}
-                        {loading && <Spin />}
-                        {bookings.length === 0 && !loading && (
-                            <div className="text-center">
-                                <p>Пусто</p>
-                                <p>Похоже, вы не добавили новых записей.</p>
-                            </div>
-                        )}
-                        {bookings.length > 0 && !loading && (
-                            <div className="">
+                        {(bookings?.length || 0) > 0 && !loading && (
+                            <div>
                                 <p className="text-center mb-4">
-                                    У вас {bookings.length} записей
+                                    У вас {bookings?.length} записей
                                 </p>
                                 <ul className="flex flex-col gap-4">
-                                    {bookings.map((booking, index) => (
+                                    {bookings?.map((booking, index) => (
                                         <li key={index} className="max-w-sm">
-                                            <Card
-                                                title={"Обновить паспорт"}
+                                            {/* <Card
+                                                title={
+                                                    booking.consultant_info.name
+                                                }
                                                 extra={
                                                     <span>
                                                         <ThunderboltOutlined />{" "}
-                                                        Живая очередь
+                                                        {booking.consultant_info
+                                                            .type === "live"
+                                                            ? "Живая очередь"
+                                                            : "Забронированный"}
                                                     </span>
                                                 }
                                                 style={{
                                                     width: "min(calc(100vw - 20px), 384px)",
                                                 }}
                                             >
-                                                <div className="flex items-center gap-4 text-xl">
-                                                    <UserOutlined />
-                                                    Впереди 7 человек
-                                                </div>
-                                                <div className="flex items-center gap-4 text-xl">
-                                                    <ClockCircleOutlined />
-                                                    Ожидаемое время 14:00 <br />
-                                                    (15 минут)
-                                                </div>
-                                            </Card>
+                                                {booking.consultant_info
+                                                    .type === "live" && (
+                                                    <div className="flex items-center gap-4 text-xl">
+                                                        <ClockCircleOutlined />
+                                                        Ожидаемое время{" "}
+                                                        {
+                                                            booking
+                                                                ?.booking_info
+                                                                ?.time_slot
+                                                        }
+                                                    </div>
+                                                )}
+                                            </Card> */}
+
                                             <Card
-                                                title={"Обновить паспорт"}
+                                                title={
+                                                    booking.consultant_info.name
+                                                }
                                                 extra={
                                                     <span>
-                                                        <CheckCircleOutlined />{" "}
-                                                        Забронированный
+                                                        {booking.consultant_info
+                                                            .type === "live" ? (
+                                                            <>
+                                                                Живая очередь{" "}
+                                                                <ThunderboltOutlined />
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <CheckCircleOutlined />{" "}
+                                                                Забронированный
+                                                            </>
+                                                        )}
                                                     </span>
                                                 }
                                                 style={{
                                                     width: "min(calc(100vw - 20px), 384px)",
                                                 }}
                                             >
-                                                <div className="flex items-center gap-4 text-xl">
+                                                <div className="flex items-center gap-4 text-xl pb-4">
                                                     <HomeOutlined />
-                                                    Окошка № 3
+                                                    Окошко № {booking?.id}
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xl">
                                                     <ClockCircleOutlined />
-                                                    Время консультатции 14:00{" "}
-                                                    <br />
-                                                    17 марта
+                                                    Время консультации{" "}
+                                                    {
+                                                        booking?.booking_info
+                                                            ?.time_slot
+                                                    }{" "}
+                                                    <br />{" "}
+                                                    {
+                                                        booking?.booking_info
+                                                            ?.date
+                                                    }
                                                 </div>
-                                                <OpenGraphPreview url="https://2gis.kz/almaty/geo/9430073144770622" />
                                             </Card>
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                        )}
+
+                        {loading && <Spin />}
+                        {bookings?.length === 0 && !loading && (
+                            <div className="text-center">
+                                <p>Пусто</p>
+                                <p>Похоже, вы не добавили новых записей.</p>
                             </div>
                         )}
                     </div>
@@ -130,7 +182,7 @@ export const OpenGraphPreview = ({ url }: { url: string }) => {
     });
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (retryCount = 0) => {
             try {
                 const proxyUrl =
                     "https://cors-proxy-gamma.vercel.app/proxy?url=";
@@ -158,7 +210,14 @@ export const OpenGraphPreview = ({ url }: { url: string }) => {
                 }
                 setOgData(ogMeta);
             } catch (error) {
-                console.error("Error fetching OpenGraph data:", error);
+                if (retryCount < 3) {
+                    // Retry up to 3 times
+                    console.log(`Retrying... Attempt ${retryCount + 1}`);
+                    setTimeout(() => fetchData(retryCount + 1), 1000);
+                } else {
+                    console.error("Error fetching OpenGraph data:", error);
+                    // setError("Failed to fetch data after several attempts.");
+                }
             }
         };
 

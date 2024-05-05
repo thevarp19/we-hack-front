@@ -1,8 +1,9 @@
 import { App, Button, Card, Form, Input, Select, Spin } from "antd";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
+import OpenGraphPreview from "../shared/Home";
 
 interface Filial {
     name: string;
@@ -15,6 +16,8 @@ export const NewQueue: FC = () => {
     const [filials, setFilials] = useState<Filial[]>([]);
     const [selectedFilial, setSelectedFilial] = useState<Filial | null>(null);
     const [consultants, setConsultants] = useState([]);
+    const [selectedSlot, setSelectedSlot] = useState();
+    const router = useRouter();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const services = [
@@ -70,7 +73,7 @@ export const NewQueue: FC = () => {
                 setStage("live");
             }
             if (type === "date") {
-                setStage("bookingTime");
+                setStage("date");
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -91,12 +94,12 @@ export const NewQueue: FC = () => {
             const response = await axios.get(
                 `https://queue-service-bvrrx45lva-uc.a.run.app/api/establishment/${selectedFilial.id}/record?command=${type}`
             );
-            setConsultants(response.data.headers);
+            setBookingTimes(response.data.result);
             if (type === "live") {
                 setStage("live");
             }
             if (type === "date") {
-                setStage("bookingTime");
+                setStage("date");
             }
             message.success("Time booked successfully");
         } catch (error) {
@@ -114,21 +117,24 @@ export const NewQueue: FC = () => {
     const handleSubmit = async (values: {
         iin: string;
         email: string;
-        serviceId: string;
+        serviceName: string;
     }) => {
-        console.log(values); // For debugging
+        if (!selectedFilial) return;
+        console.log(values);
         setLoading(true);
         try {
             const response = await axios.post(
-                `https://queue-service-bvrrx45lva-uc.a.run.app/api/appointments/`,
+                stage === "date"
+                    ? `https://queue-service-bvrrx45lva-uc.a.run.app/api/establishment/${selectedFilial.id}/handle?command=${stage}&slot=${selectedSlot}`
+                    : `https://queue-service-bvrrx45lva-uc.a.run.app/api/establishment/${selectedFilial.id}/handle?command=${stage}`,
                 {
-                    filialId: selectedFilial?.id,
                     iin: values.iin,
                     email: values.email,
-                    serviceId: values.serviceId,
+                    serviceName: values.serviceName,
                 }
             );
             console.log(response.data);
+            router.push("/queue");
             setLoading(false);
         } catch (error) {
             setError("An error occurred while submitting the form.");
@@ -142,6 +148,10 @@ export const NewQueue: FC = () => {
             </div>
         );
     if (error) return <div>Error: {error}</div>;
+
+    const handleTimeSelection = (id: any) => {
+        setSelectedSlot(id);
+    };
 
     return (
         <div className="bg-gray-100 min-h-screen flex flex-col items-center">
@@ -163,16 +173,13 @@ export const NewQueue: FC = () => {
                             >
                                 <p className="flex justify-between">
                                     <strong>Address: {filial.address}</strong>
-                                    <Link href={filial?.url || "#"}>
-                                        <Image
-                                            src="/icons/map.png"
-                                            width={48}
-                                            height={48}
-                                            alt="Logo"
-                                            className="cursor-pointer"
-                                        />
-                                    </Link>
                                 </p>
+                                <Link
+                                    href={filial?.url || "#"}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <OpenGraphPreview url={filial.url} />
+                                </Link>
                             </Card>
                         ))}
                     </div>
@@ -191,7 +198,7 @@ export const NewQueue: FC = () => {
                     </button>
                     <button
                         className="bg-green-500 px-6 py-2 rounded text-white m-2"
-                        onClick={() => handleQueueTypeSelection("date")}
+                        onClick={() => handleBookingTimeSlot("date")}
                     >
                         Забронировать время
                     </button>
@@ -259,7 +266,7 @@ export const NewQueue: FC = () => {
                                 {services.map((service) => (
                                     <Select.Option
                                         key={service.id}
-                                        value={service.id}
+                                        value={service.name}
                                     >
                                         {service.name}
                                     </Select.Option>
@@ -278,38 +285,86 @@ export const NewQueue: FC = () => {
                     </Form>
                 </div>
             )}
-            {stage === "bookingTime" && (
-                <div>
+            {stage === "date" && (
+                <div className="flex flex-col py-10">
                     <h2 className="text-2xl mb-4 text-center">
                         {selectedFilial?.name}
                     </h2>
                     <h2 className="text-2xl mb-4 text-center">
                         Выберите время
-                        <div className="flex flex-wrap">
-                            {bookingTimes.map((time) => (
-                                <div className="p-2">
-                                    <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
-                                        10:00
+                        <div className="flex flex-wrap justify-center">
+                            {bookingTimes?.map((time: any) => (
+                                <div
+                                    key={time?.id}
+                                    onClick={() => handleTimeSelection(time.id)}
+                                    className="p-2"
+                                >
+                                    <button className="bg-blue-500 px-6 py-2 rounded text-white m-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50">
+                                        {time?.slot}
                                     </button>
                                 </div>
                             ))}
-                            <div className="p-2">
-                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
-                                    10:00
-                                </button>
-                            </div>
-                            <div className="p-2">
-                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
-                                    11:00
-                                </button>
-                            </div>
-                            <div className="p-2">
-                                <button className="bg-blue-500 px-6 py-2 rounded text-white m-2">
-                                    12:00
-                                </button>
-                            </div>
                         </div>
                     </h2>
+                    <Form
+                        onFinish={handleSubmit}
+                        className="w-full max-w-xl p-5 !px-5"
+                    >
+                        <Form.Item
+                            name="iin"
+                            label="ИИН"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your ИИН!",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Введите ИИН" />
+                        </Form.Item>
+                        <Form.Item
+                            name="email"
+                            label="Почта"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your email!",
+                                },
+                            ]}
+                        >
+                            <Input placeholder="Введите email" />
+                        </Form.Item>
+                        <Form.Item
+                            name="serviceId"
+                            label="Услуги"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please select a service!",
+                                },
+                            ]}
+                        >
+                            <Select placeholder="Выберите тип услуги">
+                                {services.map((service) => (
+                                    <Select.Option
+                                        key={service.id}
+                                        value={service.id}
+                                    >
+                                        {service.name}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item className="flex justify-center w-full">
+                            <Button
+                                type="primary"
+                                className="w-[150px]"
+                                htmlType="submit"
+                            >
+                                Запись
+                            </Button>
+                        </Form.Item>
+                    </Form>
                 </div>
             )}
         </div>
