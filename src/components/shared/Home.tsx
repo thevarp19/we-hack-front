@@ -6,7 +6,7 @@ import {
     HomeOutlined,
     ThunderboltOutlined,
 } from "@ant-design/icons";
-import { Card, Layout, Spin, Typography } from "antd";
+import { Button, Card, Layout, Spin, Typography } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -119,7 +119,11 @@ export const Home: React.FC = () => {
                                             >
                                                 <div className="flex items-center gap-4 text-xl pb-4">
                                                     <HomeOutlined />
-                                                    Окошко № {booking?.id}
+                                                    Окошко №{" "}
+                                                    {
+                                                        booking?.consultant_info
+                                                            .establishment.id
+                                                    }
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xl">
                                                     <ClockCircleOutlined />
@@ -134,6 +138,21 @@ export const Home: React.FC = () => {
                                                             ?.date
                                                     }
                                                 </div>
+
+                                                <OpenGraphPreview
+                                                    url={
+                                                        booking.consultant_info
+                                                            .establishment.url
+                                                    }
+                                                />
+                                                <Link
+                                                    href={"/map"}
+                                                    className="flex justify-center py-3"
+                                                >
+                                                    <Button type="primary">
+                                                        Маршрут
+                                                    </Button>
+                                                </Link>
                                             </Card>
                                         </li>
                                     ))}
