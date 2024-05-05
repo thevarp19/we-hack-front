@@ -1,6 +1,5 @@
 "use client";
 import { login } from "@/api/auth";
-import { useAuthContext } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import jwtService from "@/lib/jwt";
 import { LoginDTO } from "@/types/api";
@@ -21,14 +20,14 @@ export const useLogin = () => {
 
     const { message } = App.useApp();
     const { getHref } = useLanguage();
-    const { setIsAuth } = useAuthContext();
+    // const { setIsAuth } = useAuthContext();
     const mutation = useMutation({
         mutationFn: login,
         onSuccess(data) {
             const jwtToken = data;
             jwtService.saveJwt(jwtToken);
             message.success("Success!");
-            setIsAuth(true);
+            // setIsAuth(true);
             router.push(getHref("/home"));
         },
         onError() {
