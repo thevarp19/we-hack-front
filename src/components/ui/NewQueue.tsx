@@ -18,7 +18,7 @@ interface Consultant {
 export const NewQueue: FC = () => {
     const [filials, setFilials] = useState<Filial[]>([]);
     const [selectedFilial, setSelectedFilial] = useState<Filial | null>(null);
-    const [consultants, setConsultants] = useState<Consultant[]>([]); // State to store consultants data
+    const [consultants, setConsultants] = useState<Consultant[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
     const [stage, setStage] = useState<string>("select"); // 'select', 'options'
@@ -124,7 +124,7 @@ export const NewQueue: FC = () => {
                     </button>
                 </div>
             )}
-            {stage === "consultants" && (
+            {stage === "live" && (
                 <div>
                     {/* Display consultants or next steps here based on fetched data */}
                 </div>

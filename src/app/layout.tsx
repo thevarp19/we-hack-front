@@ -27,7 +27,7 @@ export default function RootLayout({
                                 size="large"
                                 icon={<UserOutlined color="black" />}
                             />
-                            <h2 className="text-white">John Smit</h2>
+                            {/* <h2 className="text-white">John Smit</h2> */}
                             <BellOutlined
                                 color="white"
                                 className="text-white bg-white rounded-full p-1 text-2xl"
