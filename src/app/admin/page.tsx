@@ -1,98 +1,95 @@
 "use client";
+import { Select, Table, TableColumnsType } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-import { EditOutlined } from "@ant-design/icons";
-import { Button, Popconfirm, Table, TableColumnsType } from "antd";
-import Link from "next/link";
-import { DeleteButton } from "./DeleteButton";
-import {
-    CardResponse,
-    useCardsQuery,
-    useDeleteCardMutation,
-    useStartScraping,
-} from "./queries";
-
-const columns: TableColumnsType<CardResponse> = [
-    {
-        title: "ID",
-        dataIndex: "id",
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-    },
-    {
-        title: "URL",
-        dataIndex: "url",
-        render: (_, record) => {
-            return (
-                <a
-                    href={record.url}
-                    target="_blank"
-                    className="whitespace-nowrap truncate overflow-hidden w-96 block"
-                >
-                    {record.url}
-                </a>
-            );
-        },
-    },
-    {
-        title: "Edit",
-
-        render: (_, record) => {
-            return (
-                <Link href={`/admin/create-card/${record.id}`}>
-                    <Button icon={<EditOutlined />}>Edit</Button>
-                </Link>
-            );
-        },
-    },
-    {
-        title: "Delete",
-
-        render: (_, record) => {
-            return <DeleteCard id={record.id} />;
-        },
-    },
-];
-
-function DeleteCard({ id }: { id: number }) {
-    const { mutateAsync } = useDeleteCardMutation(id);
-    return (
-        <DeleteButton
-            onConfirm={async () => {
-                await mutateAsync();
-            }}
-        />
-    );
+interface Client {
+    id: number;
+    email: string;
+    iin: string;
+    status: "waiting" | "processing" | "finished";
 }
+const socket = io("https://wehack-ws-of5r5e4d7a-lm.a.run.app");
 
-export default function Page() {
-    const { data, isPending } = useCardsQuery();
-    const { mutateAsync } = useStartScraping();
+const statuses: Client["status"][] = ["waiting", "processing", "finished"];
+
+export default function ClientsTable() {
+    const [clients, setClients] = useState<Client[]>([]);
+
+    const columns: TableColumnsType<Client> = [
+        {
+            title: "ID",
+            dataIndex: "id",
+            key: "id",
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+        },
+        {
+            title: "IIN",
+            dataIndex: "iin",
+            key: "iin",
+        },
+        {
+            title: "Status",
+            key: "status",
+            dataIndex: "status",
+            render: (_, record) => (
+                <Select
+                    defaultValue={record.status}
+                    style={{ width: 120 }}
+                    onChange={(value) =>
+                        handleStatusChange(record.id, record.iin, value)
+                    }
+                >
+                    {statuses.map((status) => (
+                        <Select.Option key={status} value={status}>
+                            {status}
+                        </Select.Option>
+                    ))}
+                </Select>
+            ),
+        },
+    ];
+    useEffect(() => {
+        const fetchClients = async () => {
+            const response = await axios.get<Client[]>(
+                "https://queue-service-bvrrx45lva-uc.a.run.app/api/consultants/admin/clients"
+            );
+            setClients(response.data);
+        };
+
+        fetchClients();
+    }, []);
+
+    const handleStatusChange = async (
+        clientId: number,
+        iin: string,
+        newStatus: Client["status"]
+    ) => {
+        await axios.put(
+            `https://queue-service-bvrrx45lva-uc.a.run.app/api/consultants/admin/clients/${clientId}`,
+            {
+                status: newStatus,
+            }
+        );
+        // Optionally refresh the client list or locally update the status
+        socket.emit("send_notification", iin);
+        setClients(
+            clients.map((client) =>
+                client.id === clientId
+                    ? { ...client, status: newStatus }
+                    : client
+            )
+        );
+    };
+
     return (
         <div>
-            <Link href="/admin/create-card" className="mr-4">
-                <Button type="primary" className="mb-4">
-                    Добавить карту
-                </Button>
-            </Link>
-            <Popconfirm
-                title="Обновить данные"
-                description="Вы уверены, что хотите обновить данные?"
-                onConfirm={async () => {
-                    await mutateAsync();
-                }}
-            >
-                <Button type="default" className="mb-4">
-                    Обновить данные
-                </Button>
-            </Popconfirm>
-            <Table
-                columns={columns}
-                dataSource={data}
-                rowKey={"id"}
-                loading={isPending}
-            />
+            <Table columns={columns} dataSource={clients} rowKey="id" />
         </div>
     );
 }

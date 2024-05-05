@@ -6,7 +6,7 @@ import {
     HomeOutlined,
     ThunderboltOutlined,
 } from "@ant-design/icons";
-import { Card, Layout, Spin, Typography } from "antd";
+import { Button, Card, Layout, Spin, Typography } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -119,21 +119,41 @@ export const Home: React.FC = () => {
                                             >
                                                 <div className="flex items-center gap-4 text-xl pb-4">
                                                     <HomeOutlined />
-                                                    Окошко № {booking?.id}
+                                                    Окошко №{" "}
+                                                    {
+                                                        booking?.consultant_info
+                                                            .establishment.id
+                                                    }
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xl">
                                                     <ClockCircleOutlined />
-                                                    Время консультации{" "}
-                                                    {
-                                                        booking?.booking_info
-                                                            ?.time_slot
-                                                    }{" "}
-                                                    <br />{" "}
+                                                    Время консультации <br />{" "}
+                                                    {booking?.booking_info ===
+                                                        null && "Живой"}
                                                     {
                                                         booking?.booking_info
                                                             ?.date
+                                                    }{" "}
+                                                    {
+                                                        booking?.booking_info
+                                                            ?.time_slot
                                                     }
                                                 </div>
+
+                                                <OpenGraphPreview
+                                                    url={
+                                                        booking.consultant_info
+                                                            .establishment.url
+                                                    }
+                                                />
+                                                <Link
+                                                    href={"/map"}
+                                                    className="flex justify-center py-3"
+                                                >
+                                                    <Button type="primary">
+                                                        Маршрут
+                                                    </Button>
+                                                </Link>
                                             </Card>
                                         </li>
                                     ))}
@@ -163,12 +183,14 @@ export const Home: React.FC = () => {
                         />
                     </Link>
                 </div>
-                <Image
-                    src="/icons/queue.png"
-                    width={30}
-                    height={30}
-                    alt="aaa"
-                />
+                <Link href="/queue">
+                    <Image
+                        src="/icons/queue.png"
+                        width={30}
+                        height={30}
+                        alt="aaa"
+                    />{" "}
+                </Link>
             </div>
         </Layout>
     );

@@ -134,6 +134,7 @@ export const NewQueue: FC = () => {
                 }
             );
             console.log(response.data);
+            message.success("Successfully");
             router.push("/queue");
             setLoading(false);
         } catch (error) {
