@@ -1,4 +1,5 @@
 "use client";
+import { useSocketContext } from "@/context/SocketContext";
 import { Button, Form, Input } from "antd";
 
 import { FC } from "react";
@@ -15,9 +16,11 @@ export const SearchByINN: FC<SearchByINNProps> = ({
     loading,
 }) => {
     const [form] = Form.useForm();
+    const { setUserINN } = useSocketContext();
     const onFinish = (values: any) => {
         setLoading(true);
         try {
+            setUserINN(values.inn);
             setBookings([]);
         } catch (error) {
         } finally {

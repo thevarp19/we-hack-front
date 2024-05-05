@@ -1,5 +1,6 @@
 import { AntdProvider } from "@/context/AntdContext";
 import { QueryProvider } from "@/context/QueryContext";
+import { SocketProvider } from "@/context/SocketContext";
 import { roboto } from "@/styles/fonts";
 import "@/styles/globals.css";
 import { BellOutlined, UserOutlined } from "@ant-design/icons";
@@ -22,22 +23,24 @@ export default function RootLayout({
             <body className={clsx(roboto.variable, "h-full")}>
                 <QueryProvider>
                     <AntdProvider>
-                        <Header className="flex justify-between items-center p-0 ">
-                            <Avatar
-                                size="large"
-                                icon={<UserOutlined color="black" />}
-                            />
-                            {/* <h2 className="text-white">John Smit</h2> */}
-                            <BellOutlined
-                                color="white"
-                                className="text-white bg-white rounded-full p-1 text-2xl"
-                            />
-                        </Header>
-                        {children}
+                        <SocketProvider>
+                            <Header className="flex justify-between items-center p-0 ">
+                                <Avatar
+                                    size="large"
+                                    icon={<UserOutlined color="black" />}
+                                />
+                                {/* <h2 className="text-white">John Smit</h2> */}
+                                <BellOutlined
+                                    color="white"
+                                    className="text-white bg-white rounded-full p-1 text-2xl"
+                                />
+                            </Header>
+                            {children}
 
-                        <Footer style={{ textAlign: "center" }}>
-                            Created by Low Effort Team
-                        </Footer>
+                            <Footer style={{ textAlign: "center" }}>
+                                Created by Low Effort Team
+                            </Footer>
+                        </SocketProvider>
                     </AntdProvider>
                 </QueryProvider>
             </body>
