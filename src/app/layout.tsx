@@ -8,7 +8,7 @@ import { Footer, Header } from "antd/es/layout/layout";
 import clsx from "clsx";
 import type { Metadata } from "next";
 export const metadata: Metadata = {
-    title: "OptiCash",
+    title: "Queue app",
     description: "Web app",
 };
 
