@@ -1,6 +1,4 @@
 "use client";
-import { useAuthContext } from "@/context/AuthContext";
-import { useLanguage } from "@/context/LanguageContext";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Spin } from "antd";
@@ -9,14 +7,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const Header = ({ isMain }: { isMain: boolean }) => {
-    const { getHref } = useLanguage();
+    // const { getHref } = useLanguage();
 
-    const navigation = [
-        { name: "Главная", href: getHref("/home") },
-        { name: "Профиль", href: getHref("/home/profile") },
-    ];
+    const navigation = [{ name: "Главная", href: "/home" }];
     const router = useRouter();
-    const { isAuth, logout } = useAuthContext();
+    // const { isAuth, logout } = useAuthContext();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     // useEffect(() => {
@@ -51,7 +46,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                             alt=""
                         />{" "}
                         <h2 className="text-lg flex gap-4 text-white  font-medium hover:text-primary">
-                            OptiCash
+                            Queue app
                         </h2>
                     </Link>
                 </div>
@@ -76,24 +71,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                         </a>
                     ))}
                 </div>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    {isAuth ? (
-                        <Link
-                            onClick={logout}
-                            href={getHref("#")}
-                            className="text-sm font-semibold leading-6 text-white"
-                        >
-                            Выйти <span aria-hidden="true">&rarr;</span>
-                        </Link>
-                    ) : (
-                        <Link
-                            href={getHref("/auth/login")}
-                            className="text-sm font-semibold leading-6 text-white"
-                        >
-                            Войти <span aria-hidden="true">&rarr;</span>
-                        </Link>
-                    )}
-                </div>
+                <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
             </nav>
             <Dialog
                 as="div"
@@ -134,26 +112,7 @@ export const Header = ({ isMain }: { isMain: boolean }) => {
                                     </a>
                                 ))}
                             </div>
-                            <div className="py-6">
-                                {isAuth ? (
-                                    <Link
-                                        onClick={logout}
-                                        href={getHref("#")}
-                                        className="text-sm font-semibold leading-6 text-white"
-                                    >
-                                        Выйти{" "}
-                                        <span aria-hidden="true">&rarr;</span>
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        href={getHref("/auth/login")}
-                                        className="text-sm font-semibold leading-6 text-white"
-                                    >
-                                        Войти{" "}
-                                        <span aria-hidden="true">&rarr;</span>
-                                    </Link>
-                                )}
-                            </div>
+                            <div className="py-6"></div>
                         </div>
                     </div>
                 </Dialog.Panel>
