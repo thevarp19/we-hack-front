@@ -22,7 +22,7 @@ export default function RootLayout({
             <body className={clsx(roboto.variable, "h-full")}>
                 <QueryProvider>
                     <AntdProvider>
-                        <Header className="flex justify-between items-center p-0 bg-gray-200">
+                        <Header className="flex justify-between items-center p-0 ">
                             <Avatar
                                 size="large"
                                 icon={<UserOutlined color="black" />}
